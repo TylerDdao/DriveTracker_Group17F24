@@ -70,4 +70,13 @@
 	  </PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="InTripPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="NewPage1.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>
