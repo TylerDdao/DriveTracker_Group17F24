@@ -11,7 +11,7 @@ namespace Project1.Services
     {
         public async Task<string> GetSpeedLimitAsync(double latitude, double longitude)
         {
-            string apiKey = "AIzaSyAH6k9NDKMnz-GOzYMcZ5Gc_A1C7M31h-Q";
+            string apiKey = "your api key";
             string url = $"https://roads.googleapis.com/v1/speedLimits?path={latitude},{longitude}&key={apiKey}";
 
             using (HttpClient client = new HttpClient())
