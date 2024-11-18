@@ -10,7 +10,7 @@ namespace Project1
     {
         string accountEmail;
         string lastName;
-        string name;
+        string firstName;
         string address;
         string postalCode;
         string driverLicenseNumber;
@@ -20,18 +20,20 @@ namespace Project1
         public Driver()
         {
             accountEmail = "default@example.com";
-            name = "Default Name";
+            lastName="Default lastname";
+            firstName = "Default Name";
             address = "Default Address";
             postalCode = "1A1A1A";
-            driverLicenseNumber = 0;
+            driverLicenseNumber = "0";
             overallScore = 0;
         }
 
         // Parameterized constructor
-        public Driver(string accountEmail, string name, string address, string postalCode, string driverLicenseNumber, int overallScore)
+        public Driver(string name, string lastName, string accountEmail,string address, string postalCode, string driverLicenseNumber, int overallScore)
         {
             this.accountEmail = accountEmail;
-            this.name = name;
+            this.firstName = name;
+            this.lastName = lastName;
             this.address = address;
             this.postalCode = postalCode;
             this.driverLicenseNumber = driverLicenseNumber;
@@ -49,17 +51,26 @@ namespace Project1
         {
             return accountEmail;
         }
+        public string getLastName() 
+        {
+
+            return this.lastName;
+        }
+
+        public void setLastName(string Lastname) { 
+        this.lastName = Lastname;   
+        }
 
         // Setter for name
         public void SetName(string name)
         {
-            this.name = name;
+            this.firstName = name;
         }
 
         // Getter for name
         public string GetName()
         {
-            return name;
+            return firstName;
         }
 
         // Setter for address
@@ -87,13 +98,13 @@ namespace Project1
         }
 
         // Setter for driverLicenseNumber
-        public void SetDriverLicenseNumber(int driverLicenseNumber)
+        public void SetDriverLicenseNumber(string driverLicenseNumber)
         {
             this.driverLicenseNumber = driverLicenseNumber;
         }
 
         // Getter for driverLicenseNumber
-        public int GetDriverLicenseNumber()
+        public string GetDriverLicenseNumber()
         {
             return driverLicenseNumber;
         }
