@@ -22,6 +22,7 @@ public partial class AccountPage : ContentPage
         string postalCode = PostalCodeEntry.Text;
         string licenseNumber = LicenseNumberEntry.Text;
         string password = PasswordEntry.Text;
+        int overallScore = 0;
         //Status of requirements.
         bool isValid = true;
         //Error lable clear.
@@ -130,7 +131,10 @@ public partial class AccountPage : ContentPage
             await DisplayAlert("Success", "Account created successfully!", "OK");
 
             //*** DRIVER CLASS ***
-            //Driver newDriver = new Driver(firstName, lastName, email, address, postalCode, licenseNumber, password);
+            Driver newDriver = new Driver(firstName, lastName, email, address, postalCode, licenseNumber, overallScore);
+
+            //*** Account CLASS ***
+            Account newAccount = new Account(email, password);
 
             //*** DATABASE *** 
 
