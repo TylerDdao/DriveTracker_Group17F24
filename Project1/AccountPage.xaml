@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="Project1.AccountPage"         
+            BackgroundColor="White">
+    <ScrollView>
+
+        <Frame BackgroundColor="Azure"  HorizontalOptions="Fill" VerticalOptions="Center" Padding="50,10">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="30">
+                <!-- Title Label -->
+                <Label Text="Register Driver Account" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Start" 
+                    BackgroundColor="white" 
+                    TextColor="LawnGreen"                   
+                    FontSize="Large"                 
+                    FontAttributes="Bold"
+                    Padding="10,20"/>
+                <!-- First Name Field -->
+                <Entry
+            x:Name="FirstNameEntry"
+            Placeholder="Enter your first name"
+                    
+            ReturnType="Next"
+            WidthRequest="250"
+            HeightRequest="40"
+                    
+                    BackgroundColor="white"/>
+                <Label x:Name="FirstNameErrorLabel" Text="First name is required." TextColor="Red" IsVisible="False"/>
+                <!-- Last Name Field -->
+                <Entry
+            x:Name="LastNameEntry"
+            Placeholder="Enter your last name"
+            ReturnType="Next"
+            WidthRequest="250"
+            HeightRequest="40"
+                    
+                    BackgroundColor="white"/>
+                <Label x:Name="LastNameErrorLabel" Text="Last name is required." TextColor="Red" IsVisible="False"/>
+                <!-- Email Field -->
+                <Entry
+            x:Name="EmailEntry"
+            Placeholder="Enter your email"
+            Keyboard="Email"
+            ReturnType="Next"
+            WidthRequest="250"
+            HeightRequest="40"
+                    BackgroundColor="white"/>
+                <Label x:Name="EmailErrorLabel" Text="Email is required." TextColor="Red" IsVisible="False"/>
+                <!-- Address Field -->
+                <Entry
+            x:Name="AddressEntry"
+            Placeholder="Enter your address"
+            ReturnType="Next"
+            WidthRequest="250" 
+            HeightRequest="40"
+                    BackgroundColor="white"/>
+                <Label x:Name="AddressErrorLabel" Text="Address is required." TextColor="Red" IsVisible="False"/>
+                <!-- Postal Code Field -->
+                <Entry
+            x:Name="PostalCodeEntry"
+            Placeholder="Enter your postal code"
+            Keyboard="Text"
+            ReturnType="Next"
+            WidthRequest="250" 
+            HeightRequest="40"
+                    BackgroundColor="white"/>
+                <Label x:Name="PostalCodeErrorLabel" Text="Postal code is required." TextColor="Red" IsVisible="False"/>
+                <!-- Driver License Number Field -->
+                <Entry
+            x:Name="LicenseNumberEntry"
+            Placeholder="Enter your driver license number"
+            ReturnType="Next"
+            WidthRequest="250" 
+            HeightRequest="40"
+                    BackgroundColor="white"/>
+                <Label x:Name="LicenseNumberErrorLabel" Text="Driver license number is required." TextColor="Red" IsVisible="False"/>
+                <!-- Password Field -->
+                <Entry
+            x:Name="PasswordEntry"
+            Placeholder="Enter your password"
+            IsPassword="True"
+            ReturnType="Done"
+            WidthRequest="250"
+            HeightRequest="40"
+                    BackgroundColor="white"/>
+                <Label x:Name="PasswordErrorLabel" Text="Password is required." TextColor="Red" IsVisible="False"/>
+                <!-- Submit Button -->
+                <Button
+            x:Name="SubmitButton"
+            Text="Create Account"
+            Clicked="OnSubmitClicked"
+            HeightRequest="50"
+            WidthRequest="180"
+            FontSize="20"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            BackgroundColor="LimeGreen"/>
+            </VerticalStackLayout>
+        </Frame>
+    </ScrollView>
+
+</ContentPage>
