@@ -1,4 +1,5 @@
-﻿using Project1.Models;
+﻿using Catel.Reflection;
+using Project1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,20 @@ namespace Project1.Services
 {
     public class LocationServices
     {
+        public async Task<double> GetLat()
+        {
+            double lat = 0;
+            Location location = await Geolocation.Default.GetLastKnownLocationAsync();
+            lat = location.Latitude;
+            return lat;
+        }
+        public async Task<double> GetLog()
+        {
+            double log = 0;
+            Location location = await Geolocation.Default.GetLastKnownLocationAsync();
+            log = location.Longitude;
+            return log;
+        }
         public async Task<string> GetCachedLocation()
         {
             try
