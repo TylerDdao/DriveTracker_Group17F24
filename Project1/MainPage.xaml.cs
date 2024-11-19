@@ -1,5 +1,5 @@
 ﻿using InTrip;
-
+using Project1.Services;
 namespace Project1
 {
     public partial class MainPage : ContentPage
@@ -11,80 +11,77 @@ namespace Project1
             LoadGoogleMap();
         }
 
-        //Map
-        private void LoadGoogleMap()
+
+        public async Task<string> GetTrafficHtmlAsync()
         {
-            String traffic = @"
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset=""utf-8"" />
-                <title>Google Maps with Traffic and Current Location</title>
-                <style>
-                    html, body, #map {
-                        height: 100%;
-                        margin: 0;
-                        padding: 0;
-                    }
-                </style>
-                <script src=""https://maps.googleapis.com/maps/api/js?key=AIzaSyCYW11TqCgGPoGYLtb-GtfsqBDfSjS25Vk""></script>
-                <script>
-                    // Function to initialize the map
-                    function initMap(latitude, longitude) {
-                        const mapOptions = {
-                            center: { lat: latitude, lng: longitude },
-                            zoom: 15
-                        };
-                        const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            LocationServices location = new LocationServices();
+            // Create an instance of the LocationService
 
-                        // Add Traffic Layer
-                        const trafficLayer = new google.maps.TrafficLayer();
-                        trafficLayer.setMap(map);
+            // Retrieve the latitude
+            double lat = await location.GetLat();
+            double log = await location.GetLog();
 
-                        // Optional: Add a marker at the user's location
-                        new google.maps.Marker({
-                            position: { lat: latitude, lng: longitude },
-                            map: map,
-                            title: ""You are here!""
-                        });
-                    }
+            // Generate the HTML
+            string traffic = $@"
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset=""utf-8"" />
+        <title>Google Maps with Traffic and Current Location</title>
+        <style>
+            html, body, #map {{
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }}
+        </style>
+        <script src=""https://maps.googleapis.com/maps/api/js?key=AIzaSyCYW11TqCgGPoGYLtb-GtfsqBDfSjS25Vk""></script>
+        <script>
+            // Function to initialize the map
+            function initMap(latitude, longitude) {{
+                const mapOptions = {{
+                    center: {{ lat: latitude, lng: longitude }},
+                    zoom: 15
+                }};
+                const map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-                    // Function to get current location
-                    function getCurrentLocation() {
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(
-                                (position) => {
-                                    const lat = position.coords.latitude;
-                                    const lng = position.coords.longitude;
-                                    initMap(lat, lng); // Initialize map with user's location
-                                },
-                                (error) => {
-                                    console.error(""Error getting location:"", error);
-                                    // Default location if user denies permission or error occurs
-                                    initMap(43.47958, -80.51768);
-                                }
-                            );
-                        } else {
-                            console.log(""Geolocation is not supported by this browser."");
-                            // Initialize map with a default location if geolocation is unavailable
-                            initMap(43.47958, -80.51768);
-                        }
-                    }
+                // Add Traffic Layer
+                const trafficLayer = new google.maps.TrafficLayer();
+                trafficLayer.setMap(map);
 
-                    // Load the map when the page loads
-                    window.onload = getCurrentLocation;
-                </script>
-            </head>
-            <body>
-                <div id=""map""></div>
-            </body>
-            </html>
-            ";
+                // Optional: Add a marker at the user's location
+                new google.maps.Marker({{
+                    position: {{ lat: latitude, lng: longitude }},
+                    map: map,
+                    title: ""You are here!""
+                }});
+            }}
+
+            // Use latitude from C#
+            const mapLat = {lat};
+            const mapLog = {log};
+
+            // Load the map with latitude from C#
+            window.onload = () => initMap(mapLat, mapLog);
+        </script>
+    </head>
+    <body>
+        <div id=""map""></div>
+    </body>
+    </html>
+    ";
+            return traffic;
+        }
+        //Map
+        private async void LoadGoogleMap()
+        {
             GoogleMapWebView.Source = new HtmlWebViewSource
             {
-                Html = traffic
+                Html = await GetTrafficHtmlAsync()
             };
         }
+
+
 
         private async void OnButtonClicked(object sender, EventArgs e)
         {
