@@ -10,6 +10,7 @@ namespace InTrip
         {
             InitializeComponent();
             StartListeningForLocationUpdates();
+            
 
         }
         private async void StartListeningForLocationUpdates()
@@ -21,6 +22,7 @@ namespace InTrip
                     LatitudeText.Text = $"{deviceLocation.latitude}";
                     LongitudeText.Text = $"{deviceLocation.longitude}";
                 });
+
                 // Update the UI with the current speed
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
@@ -38,12 +40,10 @@ namespace InTrip
                 });
             };
 
-                _locationServices.OnStartListening();
+            await _locationServices.OnStartListening().ConfigureAwait(false);
 
         }
-
-
-       
+        
         private async void OnEndTripButtonClicked(object sender, EventArgs e)
         {
             _locationServices.OnStopListening();

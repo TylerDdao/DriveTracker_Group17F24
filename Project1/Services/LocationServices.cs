@@ -16,7 +16,7 @@ namespace Project1.Services
                 Location location = await Geolocation.Default.GetLastKnownLocationAsync();
 
                 if (location != null)
-                    return $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}, speed:{location.Speed}";
+                    return $"Latitude: {location.Latitude}, Longitude: {location.Longitude},  speed:{location.Speed}";
             }
             catch (FeatureNotSupportedException fnsEx)
             {
@@ -54,7 +54,7 @@ namespace Project1.Services
                 Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
                 if (location != null)
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
             }
             // Catch one of the following exceptions:
             //   FeatureNotSupportedException
@@ -84,13 +84,23 @@ namespace Project1.Services
                 var request = new GeolocationListeningRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(1));
                 var success = await Geolocation.StartListeningForegroundAsync(request);
 
-                string status = success
-                    ? "Started listening for foreground location updates"
-                    : "Couldn't start listening";
+                if (!success)
+                {
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        await Application.Current.MainPage.DisplayAlert(
+                            "Error",
+                            "Could not start listening for location updates.",
+                            "OK"
+                        );
+                    });
+                }
+                
             }
             catch (Exception ex)
             {
                 // Unable to start listening for location changes
+                Console.WriteLine($"Error: {ex}");
             }
         }
 
