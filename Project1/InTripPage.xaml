@@ -3,26 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InTrip.InTripPage">
 
-    <StackLayout Padding="10">
+    <StackLayout Padding="10" Spacing="20">
 
         <!-- Display Latitude -->
         <Label Text="Latitude:" FontSize="20" />
-        <Label x:Name="LatitudeText" FontSize="20" />
+        <Label x:Name="LatitudeText" FontSize="20" BackgroundColor="LimeGreen"/>
 
         <!-- Display Longitude -->
         <Label Text="Longitude:" FontSize="20" />
-        <Label x:Name="LongitudeText" FontSize="20" />
+        <Label x:Name="LongitudeText" FontSize="20" BackgroundColor="LimeGreen"/>
 
         <!-- Display Current Speed -->
         <Label Text="Current Speed:" FontSize="20" />
-        <Label x:Name="CurrentSpeedLabel" FontSize="20" />
+        <Label x:Name="CurrentSpeedLabel" FontSize="20" BackgroundColor="LimeGreen"/>
 
         <!-- Display Speed Limit -->
         <Label Text="Speed Limit:" FontSize="20" />
-        <Label x:Name="SpeedLimitLabel" FontSize="20" />
+        <Label x:Name="SpeedLimitLabel" FontSize="20" BackgroundColor="LimeGreen"/>
 
         <!-- End Trip Button -->
-        <Button Text="End Trip" Clicked="OnEndTripButtonClicked" />
+        <Button Text="End Trip" Clicked="OnEndTripButtonClicked" BackgroundColor="LimeGreen" HeightRequest="70" WidthRequest="150"/>
 
     </StackLayout>
 </ContentPage>
