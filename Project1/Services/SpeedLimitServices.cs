@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace Project1.Services
     {
         private const string apiKey = "fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ"; // Replace with your actual API key
 
-        public async Task<DeviceLocation> GetSpeedLimitAndLocationAsync(double latitude, double longitude)
+        public async Task<int?> GetSpeedLimitAsync(double latitude, double longitude)
         {
-            string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4,SPEED_LIMITS_FC2&prox={latitude},{longitude},50&apiKey={apiKey}";
+            string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4,SPEED_LIMITS_FC2,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4&in=tile:24267002,1516094,24275195,24275196,24283388,24283387&apiKey=fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ";
 
             using (HttpClient client = new HttpClient())
             {
@@ -23,37 +24,52 @@ namespace Project1.Services
                         string jsonResponse = await response.Content.ReadAsStringAsync();
                         var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
 
-                        var speedLimit = speedData?.Layers?.FirstOrDefault()?.Attributes?.FirstOrDefault()?.FromRefSpeedLimit;
-                        return new DeviceLocation(latitude, longitude, speedLimit ?? 0);
+                        foreach (var tile in speedData.Tiles)
+                        {
+                            foreach (var row in tile.Rows)
+                            {
+                                if (!string.IsNullOrEmpty(row.FROM_REF_SPEED_LIMIT))
+                                {
+                                    return int.Parse(row.FROM_REF_SPEED_LIMIT);
+                                }
+                                if (!string.IsNullOrEmpty(row.TO_REF_SPEED_LIMIT))
+                                {
+                                    return int.Parse(row.TO_REF_SPEED_LIMIT);
+                                }
+                            }
+                        }
+
+                        return null; // No speed limit found
                     }
                     else
                     {
                         string errorResponse = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"Error: {response.StatusCode}, {errorResponse}");
-                        return new DeviceLocation(latitude, longitude, 0);
+                        return null;
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return new DeviceLocation(latitude, longitude, 0);
+                    return null;
                 }
             }
         }
 
         private class SpeedLimitResponse
         {
-            public List<Layer> Layers { get; set; }
+            public List<Tile> Tiles { get; set; }
         }
 
-        private class Layer
+        private class Tile
         {
-            public List<Attribute> Attributes { get; set; }
+            public List<Row> Rows { get; set; }
         }
 
-        private class Attribute
+        private class Row
         {
-            public int? FromRefSpeedLimit { get; set; }
+            public string FROM_REF_SPEED_LIMIT { get; set; }
+            public string TO_REF_SPEED_LIMIT { get; set; }
         }
     }
 }

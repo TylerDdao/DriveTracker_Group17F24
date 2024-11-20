@@ -30,10 +30,10 @@ namespace InTrip
                 // Get the speed limit and update the UI
                 try
                 {
-                    var speedLimit = await _speedLimitServices.GetSpeedLimitAndLocationAsync(deviceLocation.Latitude, deviceLocation.Longitude);
+                    var speedLimit = await _speedLimitServices.GetSpeedLimitAsync(deviceLocation.Latitude, deviceLocation.Longitude);
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        SpeedLimitLabel.Text = $"{speedLimit.Speed} km/h";
+                        SpeedLimitLabel.Text = speedLimit.HasValue ? $"{speedLimit.Value} km/h" : "No speed limit data available";
                     });
                 }
                 catch (Exception ex)
