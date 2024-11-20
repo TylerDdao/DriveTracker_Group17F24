@@ -1,53 +1,54 @@
 using Project1.Services;
+using Microsoft.Maui.Controls;
+using System;
+using System.Threading.Tasks;
+
 namespace InTrip
 {
     public partial class InTripPage : ContentPage
     {
-
         private readonly LocationServices _locationServices = new LocationServices();
-        private readonly SpeedLimitServices speedLimitServices = new SpeedLimitServices();
+        private readonly SpeedLimitServices _speedLimitServices = new SpeedLimitServices();
+
         public InTripPage()
         {
             InitializeComponent();
             StartListeningForLocationUpdates();
-
         }
-        private async void StartListeningForLocationUpdates()
+
+        private void StartListeningForLocationUpdates()
         {
-            _locationServices.LocationChanged += (sender, deviceLocation) =>
+            _locationServices.LocationChanged += async (sender, deviceLocation) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    LatitudeText.Text = $"{deviceLocation.latitude}";
-                    LongitudeText.Text = $"{deviceLocation.longitude}";
-                });
-                // Update the UI with the current speed
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    CurrentSpeedLabel.Text = $"{deviceLocation.speed} km/h";
+                    LatitudeText.Text = $"{deviceLocation.Latitude}";
+                    LongitudeText.Text = $"{deviceLocation.Longitude}";
+                    CurrentSpeedLabel.Text = $"{deviceLocation.Speed} km/h";
                 });
 
                 // Get the speed limit and update the UI
-                var speedLimit = speedLimitServices.GetSpeedLimitAsync(deviceLocation.latitude, deviceLocation.longitude);
-                speedLimit.ContinueWith(task =>
+                try
                 {
+                    var speedLimit = await _speedLimitServices.GetSpeedLimitAndLocationAsync(deviceLocation.Latitude, deviceLocation.Longitude);
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        SpeedLimitLabel.Text = task.Result + " km/h";
+                        SpeedLimitLabel.Text = $"{speedLimit.Speed} km/h";
                     });
-                });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error fetching speed limit: {ex.Message}");
+                }
             };
 
-                _locationServices.OnStartListening();
-
+            _locationServices.StartListening();
         }
 
-
-       
         private async void OnEndTripButtonClicked(object sender, EventArgs e)
         {
-            _locationServices.OnStopListening();
-            await DisplayAlert("Trip ended", "Location stoped", "Ok");
+            _locationServices.StopListening();
+            await DisplayAlert("Trip ended", "Location updates stopped.", "Ok");
         }
     }
 }

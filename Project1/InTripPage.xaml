@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InTrip.InTripPage"
-             Title="TripPage">
-    <VerticalStackLayout>
-        <StackLayout Margin="2" Spacing="50" BackgroundColor="Aquamarine">
-            <Label Text="Current Speed:" FontSize="Large"  />
-            <Label x:Name="CurrentSpeedLabel" FontSize="Large" Text="-- km/h" />
+             x:Class="InTrip.InTripPage">
 
-            <Label Text="Speed Limit:" FontSize="Large" />
-            <Label x:Name="SpeedLimitLabel" FontSize="Large" Text="Unknown" />
-            <Label Text=" Latitude: " x:Name="LatitudeText"/>
-            <Label Text=" Longitude: " x:Name="LongitudeText"/>
+    <StackLayout Padding="10">
 
-            
-        </StackLayout>
-        <StackLayout Margin="100" Spacing="10">
-            <Button   WidthRequest="250" 
-                      HeightRequest="80" 
-                      Text="End Trip" 
-                      Clicked="OnEndTripButtonClicked" 
-                      BackgroundColor="DarkRed"
-                      FontSize="Large"/>
-        </StackLayout>
-                     
-    </VerticalStackLayout>
+        <!-- Display Latitude -->
+        <Label Text="Latitude:" FontSize="20" />
+        <Label x:Name="LatitudeText" FontSize="20" />
+
+        <!-- Display Longitude -->
+        <Label Text="Longitude:" FontSize="20" />
+        <Label x:Name="LongitudeText" FontSize="20" />
+
+        <!-- Display Current Speed -->
+        <Label Text="Current Speed:" FontSize="20" />
+        <Label x:Name="CurrentSpeedLabel" FontSize="20" />
+
+        <!-- Display Speed Limit -->
+        <Label Text="Speed Limit:" FontSize="20" />
+        <Label x:Name="SpeedLimitLabel" FontSize="20" />
+
+        <!-- End Trip Button -->
+        <Button Text="End Trip" Clicked="OnEndTripButtonClicked" />
+
+    </StackLayout>
 </ContentPage>

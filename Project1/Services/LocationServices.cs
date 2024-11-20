@@ -1,126 +1,75 @@
 ﻿using Project1.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Project1.Services
 {
     public class LocationServices
     {
-        public async Task<string> GetCachedLocation()
-        {
-            try
-            {
-                Location location = await Geolocation.Default.GetLastKnownLocationAsync();
-
-                if (location != null)
-                    return $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}, speed:{location.Speed}";
-            }
-            catch (FeatureNotSupportedException fnsEx)
-            {
-                // Handle not supported on device exception
-            }
-            catch (FeatureNotEnabledException fneEx)
-            {
-                // Handle not enabled on device exception
-            }
-            catch (PermissionException pEx)
-            {
-                // Handle permission exception
-            }
-            catch (Exception ex)
-            {
-                // Unable to get location
-            }
-
-            return "None";
-        }
-        //get current location 
-        private CancellationTokenSource _cancelTokenSource;
-        private bool _isCheckingLocation;
         public event EventHandler<DeviceLocation> LocationChanged;
-        public async Task GetCurrentLocation()
+
+        public async Task StartListening()
         {
             try
             {
-                _isCheckingLocation = true;
-
-                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-
-                _cancelTokenSource = new CancellationTokenSource();
-
-                Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-                if (location != null)
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-            }
-            // Catch one of the following exceptions:
-            //   FeatureNotSupportedException
-            //   FeatureNotEnabledException
-            //   PermissionException
-            catch (Exception ex)
-            {
-                // Unable to get location
-            }
-            finally
-            {
-                _isCheckingLocation = false;
-            }
-        }
-
-        public void CancelRequest()
-        {
-            if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
-                _cancelTokenSource.Cancel();
-        }
-        //Lister for location 
-        public async Task OnStartListening()
-        {
-            try
-            {
-                Geolocation.LocationChanged += Geolocation_LocationChanged;
+                Geolocation.LocationChanged += OnLocationChanged;
                 var request = new GeolocationListeningRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(1));
                 var success = await Geolocation.StartListeningForegroundAsync(request);
-
-                string status = success
-                    ? "Started listening for foreground location updates"
-                    : "Couldn't start listening";
+                Console.WriteLine(success ? "Started listening for location updates" : "Couldn't start listening");
             }
             catch (Exception ex)
             {
-                // Unable to start listening for location changes
+                Console.WriteLine($"Unable to start listening for location changes: {ex.Message}");
             }
         }
 
-        void Geolocation_LocationChanged(object sender, GeolocationLocationChangedEventArgs e)
-        {
-            // Process e.Location to get the new location
-            var deviceLocation = new DeviceLocation(e.Location.Latitude, e.Location.Longitude,e.Location.Speed??0.0);
-
-            if (deviceLocation != null)
-            {
-                LocationChanged?.Invoke(this, deviceLocation);
-            }
-
-
-        }
-
-        //stop listening to location 
-        public void OnStopListening()
+        public void StopListening()
         {
             try
             {
-                Geolocation.LocationChanged -= Geolocation_LocationChanged;
+                Geolocation.LocationChanged -= OnLocationChanged;
                 Geolocation.StopListeningForeground();
-                string status = "Stopped listening for foreground location updates";
-                _isCheckingLocation = false;
+                Console.WriteLine("Stopped listening for location updates");
             }
             catch (Exception ex)
             {
-                // Unable to stop listening for location changes
+                Console.WriteLine($"Unable to stop listening for location changes: {ex.Message}");
             }
+        }
+
+        private void OnLocationChanged(object sender, GeolocationLocationChangedEventArgs e)
+        {
+            var deviceLocation = new DeviceLocation(e.Location.Latitude, e.Location.Longitude, e.Location.Speed ?? 0.0);
+            LocationChanged?.Invoke(this, deviceLocation);
+        }
+
+        public async Task<Location> GetCurrentLocationAsync()
+        {
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(10));
+                return await Geolocation.GetLocationAsync(request);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unable to get location: {ex.Message}");
+                return null;
+            }
+        }
+    }
+
+    public class DeviceLocation
+    {
+        public double Latitude { get; }
+        public double Longitude { get; }
+        public double Speed { get; }
+
+        public DeviceLocation(double latitude, double longitude, double speed)
+        {
+            Latitude = latitude;
+            Longitude = longitude;
+            Speed = speed;
         }
     }
 }

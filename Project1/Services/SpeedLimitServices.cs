@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,64 +7,53 @@ namespace Project1.Services
 {
     public class SpeedLimitServices
     {
-        public async Task<string> GetSpeedLimitAsync(double latitude, double longitude)
+        private const string apiKey = "fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ"; // Replace with your actual API key
+
+        public async Task<DeviceLocation> GetSpeedLimitAndLocationAsync(double latitude, double longitude)
         {
-            string apiKey = "your api key";
-            string url = $"https://roads.googleapis.com/v1/speedLimits?path={latitude},{longitude}&key={apiKey}";
+            string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4,SPEED_LIMITS_FC2&prox={latitude},{longitude},50&apiKey={apiKey}";
 
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    // Get response from the API
                     HttpResponseMessage response = await client.GetAsync(url);
                     if (response.IsSuccessStatusCode)
                     {
                         string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        // Debug: Log the raw JSON response
-                        Console.WriteLine("API Response: " + jsonResponse);
-
-                        // Parse the JSON response to extract speed limit data
                         var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
 
-                        // Check if speed data is available and return it
-                        var speedLimit = speedData?.SpeedLimits?.FirstOrDefault()?.speedLimit;
-                        if (speedLimit.HasValue)
-                        {
-                            return $"{speedLimit.Value} km/h";
-                        }
-                        else
-                        {
-                            return "Speed limit not found";
-                        }
+                        var speedLimit = speedData?.Layers?.FirstOrDefault()?.Attributes?.FirstOrDefault()?.FromRefSpeedLimit;
+                        return new DeviceLocation(latitude, longitude, speedLimit ?? 0);
                     }
                     else
                     {
-                        // Log error response from the API
                         string errorResponse = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"Error: {response.StatusCode}, {errorResponse}");
-                        return "Error retrieving speed limit";
+                        return new DeviceLocation(latitude, longitude, 0);
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Log exception if occurs
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return "Exception occurred while fetching speed limit";
+                    return new DeviceLocation(latitude, longitude, 0);
                 }
             }
         }
 
-        // Define a model to parse the JSON response
-        public class SpeedLimitResponse
+        private class SpeedLimitResponse
         {
-            public List<SpeedLimit> SpeedLimits { get; set; }
+            public List<Layer> Layers { get; set; }
         }
 
-        public class SpeedLimit
+        private class Layer
         {
-            public int speedLimit { get; set; } // Speed limit in km/h or mph depending on locale
+            public List<Attribute> Attributes { get; set; }
+        }
+
+        private class Attribute
+        {
+            public int? FromRefSpeedLimit { get; set; }
         }
     }
 }
