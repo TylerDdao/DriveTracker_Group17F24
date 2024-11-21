@@ -8,10 +8,10 @@
     Shell.TitleColor ="red"
     Title="Project1">
 
-    <ShellContent 
+    <!--<ShellContent 
     Title="Account" 
     ContentTemplate="{DataTemplate local:AccountPage}" 
-    Route="AccountPage"/>
+    Route="AccountPage"/>-->
     
     <ShellContent
         Title="Home"

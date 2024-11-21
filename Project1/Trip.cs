@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Project1
 {
     internal class Trip
@@ -43,7 +42,6 @@ namespace Project1
                 Score = 0;
         }
     }
-
     public class SpeedRecord
     {
         public DateTime Timestamp { get; set; }

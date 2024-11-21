@@ -1,3 +1,4 @@
+
 ﻿using Project1.Services;
 using System;
 using System.Threading.Tasks;
@@ -5,8 +6,6 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Dispatching;
 using InTrip;
 using Project1.Models;
-
-
 namespace Project1
 {
     public partial class MainPage : ContentPage
@@ -29,7 +28,6 @@ namespace Project1
             LoadGoogleMap();
             StartUpdatingLocation();
         }
-
         private void DisplayAccountInfo()
         {
             // Display account information (adjust this to fit your UI elements)
