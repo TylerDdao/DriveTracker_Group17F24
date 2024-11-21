@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,64 +8,68 @@ namespace Project1.Services
 {
     public class SpeedLimitServices
     {
-        public async Task<string> GetSpeedLimitAsync(double latitude, double longitude)
+        private const string apiKey = "fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ"; // Replace with your actual API key
+
+        public async Task<int?> GetSpeedLimitAsync(double latitude, double longitude)
         {
-            string apiKey = "your api key";
-            string url = $"https://roads.googleapis.com/v1/speedLimits?path={latitude},{longitude}&key={apiKey}";
+            string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4,SPEED_LIMITS_FC2,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4&in=tile:24267002,1516094,24275195,24275196,24283388,24283387&apiKey=fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ";
 
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    // Get response from the API
                     HttpResponseMessage response = await client.GetAsync(url);
                     if (response.IsSuccessStatusCode)
                     {
                         string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        // Debug: Log the raw JSON response
-                        Console.WriteLine("API Response: " + jsonResponse);
-
-                        // Parse the JSON response to extract speed limit data
                         var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
 
-                        // Check if speed data is available and return it
-                        var speedLimit = speedData?.SpeedLimits?.FirstOrDefault()?.speedLimit;
-                        if (speedLimit.HasValue)
+                        foreach (var tile in speedData.Tiles)
                         {
-                            return $"{speedLimit.Value} km/h";
+                            foreach (var row in tile.Rows)
+                            {
+                                if (!string.IsNullOrEmpty(row.FROM_REF_SPEED_LIMIT))
+                                {
+                                    return int.Parse(row.FROM_REF_SPEED_LIMIT);
+                                }
+                                if (!string.IsNullOrEmpty(row.TO_REF_SPEED_LIMIT))
+                                {
+                                    return int.Parse(row.TO_REF_SPEED_LIMIT);
+                                }
+                            }
                         }
-                        else
-                        {
-                            return "Speed limit not found";
-                        }
+
+                        return null; // No speed limit found
                     }
                     else
                     {
-                        // Log error response from the API
                         string errorResponse = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"Error: {response.StatusCode}, {errorResponse}");
-                        return "Error retrieving speed limit";
+                        return null;
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Log exception if occurs
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return "Exception occurred while fetching speed limit";
+                    return null;
                 }
             }
         }
 
-        // Define a model to parse the JSON response
-        public class SpeedLimitResponse
+        private class SpeedLimitResponse
         {
-            public List<SpeedLimit> SpeedLimits { get; set; }
+            public List<Tile> Tiles { get; set; }
         }
 
-        public class SpeedLimit
+        private class Tile
         {
-            public int speedLimit { get; set; } // Speed limit in km/h or mph depending on locale
+            public List<Row> Rows { get; set; }
+        }
+
+        private class Row
+        {
+            public string FROM_REF_SPEED_LIMIT { get; set; }
+            public string TO_REF_SPEED_LIMIT { get; set; }
         }
     }
 }

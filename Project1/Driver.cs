@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project1
 {
-    internal class Driver
+    public class Driver
     {
         string accountEmail;
         string lastName;
