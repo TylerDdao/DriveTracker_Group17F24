@@ -9,34 +9,7 @@ namespace Project1.Services
 {
     public class LocationServices
     {
-        public async Task<string> GetCachedLocation()
-        {
-            try
-            {
-                Location location = await Geolocation.Default.GetLastKnownLocationAsync();
-
-                if (location != null)
-                    return $"Latitude: {location.Latitude}, Longitude: {location.Longitude},  speed:{location.Speed}";
-            }
-            catch (FeatureNotSupportedException fnsEx)
-            {
-                // Handle not supported on device exception
-            }
-            catch (FeatureNotEnabledException fneEx)
-            {
-                // Handle not enabled on device exception
-            }
-            catch (PermissionException pEx)
-            {
-                // Handle permission exception
-            }
-            catch (Exception ex)
-            {
-                // Unable to get location
-            }
-
-            return "None";
-        }
+        
         //get current location 
         private CancellationTokenSource _cancelTokenSource;
         private bool _isCheckingLocation;
@@ -56,10 +29,6 @@ namespace Project1.Services
                 if (location != null)
                     Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
             }
-            // Catch one of the following exceptions:
-            //   FeatureNotSupportedException
-            //   FeatureNotEnabledException
-            //   PermissionException
             catch (Exception ex)
             {
                 // Unable to get location
@@ -80,6 +49,30 @@ namespace Project1.Services
         {
             try
             {
+                // Check and request location permission
+                var locationPermission = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+                if (locationPermission != PermissionStatus.Granted)
+                {
+                    locationPermission = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                }
+
+                if (locationPermission != PermissionStatus.Granted)
+                {
+                    await MainThread.InvokeOnMainThreadAsync(async () =>
+                    {
+                        await Application.Current.MainPage.DisplayAlert(
+                            "Permission Denied",
+                            "Location permission is required to get accurate updates.",
+                            "OK"
+                        );
+                    });
+                    return;
+                }
+
+                // Fetch initial location to avoid default fallback
+                var initialLocation = await Geolocation.GetLocationAsync(
+                    new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(5))
+                );
                 Geolocation.LocationChanged += Geolocation_LocationChanged;
                 var request = new GeolocationListeningRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(1));
                 var success = await Geolocation.StartListeningForegroundAsync(request);

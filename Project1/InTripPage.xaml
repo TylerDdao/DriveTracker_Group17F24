@@ -2,14 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InTrip.InTripPage"
-             Title="TripPage">
+             Title="On Trip">
     <VerticalStackLayout>
-        <StackLayout Margin="2" Spacing="50" BackgroundColor="Aquamarine">
-            <Label Text="Current Speed:" FontSize="Large"  />
-            <Label x:Name="CurrentSpeedLabel" FontSize="Large" Text="-- km/h" />
+        <StackLayout Margin="10" Spacing="25" BackgroundColor="Aquamarine">
+            <Label Text="Current Speed:" FontSize="Large" Margin="5" />
+            <Label x:Name="CurrentSpeedLabel" FontSize="Large" Text="-- km/h" Margin="5" />
 
-            <Label Text="Speed Limit:" FontSize="Large" />
-            <Label x:Name="SpeedLimitLabel" FontSize="Large" Text="Unknown" />
+            <Label Text="Speed Limit:" FontSize="Large" Margin="5" />
+            <Label x:Name="SpeedLimitLabel" FontSize="Large" Text="Unknown" Margin="5" />
             <Label Text=" Latitude: " x:Name="LatitudeText"/>
             <Label Text=" Longitude: " x:Name="LongitudeText"/>
 
@@ -21,8 +21,29 @@
                       Text="End Trip" 
                       Clicked="OnEndTripButtonClicked" 
                       BackgroundColor="DarkRed"
-                      FontSize="Large"/>
+                      FontSize="Header"/>
+            
         </StackLayout>
-                     
+        
+           <HorizontalStackLayout Spacing="40">
+            <Button 
+                Margin="10"
+  
+                WidthRequest="80"
+                HeightRequest="45"
+                VerticalOptions="FillAndExpand"/>
+            <Button 
+                Margin="10"
+                WidthRequest="80"
+                HeightRequest="45"
+                VerticalOptions="FillAndExpand"
+                />
+            <Button 
+                Margin="10"
+                WidthRequest="80"
+                HeightRequest="45"
+                VerticalOptions="FillAndExpand"
+    />
+        </HorizontalStackLayout>          
     </VerticalStackLayout>
 </ContentPage>
