@@ -140,6 +140,10 @@ public partial class AccountPage : ContentPage
 
             //*** NAVIGATE TO MAIN ***
             await Application.Current.MainPage.Navigation.PushAsync(new MainPage());
+            // Navigate to MainPage and pass the driver instance
+            var mainPage = new MainPage(); 
+            mainPage.SetDriverInstance(newDriver); 
+            await Application.Current.MainPage.Navigation.PushAsync(mainPage); 
         }
     }
 }

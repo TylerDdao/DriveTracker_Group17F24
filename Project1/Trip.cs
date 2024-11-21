@@ -37,8 +37,7 @@ namespace Project1
 
         public void CalculateScore()
         {
-            // Implement your scoring logic here
-            // For example, reducing the score by 10 points for each violation
+            //reducing the score by 10 points for each violation
             Score = 100 - (ExceedingSpeedRecords.Count * 10);
             if (Score < 0)
                 Score = 0;

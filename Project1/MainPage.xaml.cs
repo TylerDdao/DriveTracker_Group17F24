@@ -6,15 +6,17 @@ using Microsoft.Maui.Dispatching;
 using InTrip;
 using Project1.Models;
 
+
 namespace Project1
 {
     public partial class MainPage : ContentPage
     {
         private readonly LocationServices _locationServices;
         private IDispatcherTimer _timer;
-        private Driver driver;
+
         // Assume this driver instance is set somewhere in the application, e.g., AccountPage
         Driver driverInstance;
+   
 
         public MainPage()
         {
@@ -23,15 +25,22 @@ namespace Project1
             BindingContext = this;
 
             
-            //*** DATA BASE ***
-            // Retrieve the driver's full name
-           
-            //*** DATA BASE *** 
-            // Set the driver's full name to the label
-            
+
             LoadGoogleMap();
             StartUpdatingLocation();
         }
+
+        private void DisplayAccountInfo()
+        {
+            // Display account information (adjust this to fit your UI elements)
+            DriverNameLabel.Text = ($"{driverInstance.GetName()}");
+        }
+        // Method to set the Driver instance and display account info
+         public void SetDriverInstance(Driver driver) { 
+            driverInstance = driver; 
+            DisplayAccountInfo(); 
+        }
+
 
         private async void LoadGoogleMap()
         {
@@ -157,6 +166,7 @@ namespace Project1
         {
             // Navigate to InTripPage
             await Navigation.PushAsync(new InTripPage());
+
         }
     }
 }
