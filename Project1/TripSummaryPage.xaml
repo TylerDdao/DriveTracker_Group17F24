@@ -3,30 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project1.TripSummaryPage"
              Title="Trip Summary">
-    <VerticalStackLayout Padding="10">
+    <VerticalStackLayout Padding="10" Spacing="20">
         <Label 
             Text="Trip Summary"
             FontSize="24"
             FontAttributes="Bold"
-            HorizontalOptions="Center" />
+            HorizontalOptions="Center" TextColor="LimeGreen"/>
 
         <Label 
             Text="{Binding TripDuration}"
             FontSize="18"
             FontAttributes="Bold"
-            Margin="10,0,0,0" />
+            Margin="10,0,0,0" BackgroundColor="LimeGreen"/>
 
         <Label 
             Text="{Binding TripScore}"
             FontSize="18"
             FontAttributes="Bold"
-            Margin="10,0,0,0" />
+            Margin="10,0,0,0" BackgroundColor="LimeGreen"/>
 
         <Label 
             Text="Exceeding Speed Violations"
             FontSize="18"
             FontAttributes="Bold"
-            Margin="10,0,0,0" />
+            Margin="10,0,0,0" BackgroundColor="LimeGreen"/>
 
         <CollectionView ItemsSource="{Binding ExceedingSpeedRecords}">
             <CollectionView.ItemTemplate>
