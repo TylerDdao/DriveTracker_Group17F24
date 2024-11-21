@@ -2,6 +2,8 @@ using Project1.Services;
 using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
+using Project1;
+using SkiaSharp.Views.Maui.Controls;
 
 namespace InTrip
 {
@@ -9,10 +11,12 @@ namespace InTrip
     {
         private readonly LocationServices _locationServices = new LocationServices();
         private readonly SpeedLimitServices _speedLimitServices = new SpeedLimitServices();
+        private Trip currentTrip;
 
         public InTripPage()
         {
             InitializeComponent();
+            currentTrip = new Trip();
             StartListeningForLocationUpdates();
         }
 
@@ -27,7 +31,6 @@ namespace InTrip
                     CurrentSpeedLabel.Text = $"{deviceLocation.Speed} km/h";
                 });
 
-                // Get the speed limit and update the UI
                 try
                 {
                     var speedLimit = await _speedLimitServices.GetSpeedLimitAsync(deviceLocation.Latitude, deviceLocation.Longitude);
@@ -35,6 +38,11 @@ namespace InTrip
                     {
                         SpeedLimitLabel.Text = speedLimit.HasValue ? $"{speedLimit.Value} km/h" : "No speed limit data available";
                     });
+
+                    if (speedLimit.HasValue)
+                    {
+                        currentTrip.AddSpeedRecordIfExceedsLimit(deviceLocation.Speed, speedLimit.Value);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -47,8 +55,21 @@ namespace InTrip
 
         private async void OnEndTripButtonClicked(object sender, EventArgs e)
         {
-            _locationServices.StopListening();
-            await DisplayAlert("Trip ended", "Location updates stopped.", "Ok");
+            try
+            {
+                _locationServices.StopListening();
+                currentTrip.EndTrip(); // Record the end time of the trip
+                currentTrip.CalculateScore(); // Calculate the trip score
+                await DisplayAlert("Trip ended", "Location updates stopped.", "Ok");
+
+                // Navigate to TripSummaryPage and pass the trip data
+                await Navigation.PushAsync(new TripSummaryPage(currentTrip.Duration, currentTrip.Score, currentTrip.ExceedingSpeedRecords));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during navigation: {ex.Message}");
+                await DisplayAlert("Error", "An error occurred while ending the trip.", "OK");
+            }
         }
     }
 }

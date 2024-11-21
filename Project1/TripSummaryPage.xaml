@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project1.TripSummaryPage"
+             Title="Trip Summary">
+    <VerticalStackLayout Padding="10">
+        <Label 
+            Text="Trip Summary"
+            FontSize="24"
+            FontAttributes="Bold"
+            HorizontalOptions="Center" />
+
+        <Label 
+            Text="{Binding TripDuration}"
+            FontSize="18"
+            FontAttributes="Bold"
+            Margin="10,0,0,0" />
+
+        <Label 
+            Text="{Binding TripScore}"
+            FontSize="18"
+            FontAttributes="Bold"
+            Margin="10,0,0,0" />
+
+        <Label 
+            Text="Exceeding Speed Violations"
+            FontSize="18"
+            FontAttributes="Bold"
+            Margin="10,0,0,0" />
+
+        <CollectionView ItemsSource="{Binding ExceedingSpeedRecords}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" Padding="10">
+                        <Label Text="{Binding Timestamp, StringFormat='{0:HH:mm:ss}'}" />
+                        <Label Text="{Binding Speed, StringFormat='{0} km/h'}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
