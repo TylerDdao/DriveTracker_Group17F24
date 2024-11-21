@@ -6,12 +6,8 @@
     <StackLayout>
 
         <HorizontalStackLayout HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,0,0">
-            <BoxView 
-                WidthRequest="50"
-                HeightRequest="50"
-                BackgroundColor="LimeGreen"
-                CornerRadius="25"/>
-
+            <Image Source="car.png" WidthRequest="50" HeightRequest="50"/>
+           
             <Label x:Name="DriverNameLabel"
                    FontSize="20" 
                    Margin="10,0,0,0"
