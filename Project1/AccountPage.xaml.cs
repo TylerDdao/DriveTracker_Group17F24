@@ -1,13 +1,16 @@
 using System.Text.RegularExpressions;
 using Microsoft.Maui.Controls;
+using Project1.Data;
+using Project1.Models;
 namespace Project1;
 
 public partial class AccountPage : ContentPage
 {
+    private readonly AzureSQLAccess _azureSQLAccess;
     public AccountPage()
     {
         InitializeComponent();
-      
+        _azureSQLAccess = new AzureSQLAccess();
     }
 
     //Event Handler.
@@ -136,10 +139,13 @@ public partial class AccountPage : ContentPage
             //*** Account CLASS ***
             Account newAccount = new Account(email, password);
 
-            //*** DATABASE *** 
+            
+
+            //*** DATABASE ***          
+            await _azureSQLAccess.InsertDriverAsync(newDriver, newAccount);
 
             //*** NAVIGATE TO MAIN ***
-            await Application.Current.MainPage.Navigation.PushAsync(new MainPage());
+            
             // Navigate to MainPage and pass the driver instance
             var mainPage = new MainPage(); 
             mainPage.SetDriverInstance(newDriver); 

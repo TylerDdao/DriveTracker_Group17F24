@@ -1,14 +1,22 @@
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Project1.Data;
+using Project1.Models;
+using System;
 
 namespace Project1
 {
     public partial class TripSummaryPage : ContentPage
     {
-        public TripSummaryPage(TimeSpan tripDuration, int tripScore, List<SpeedRecord> exceedingSpeedRecords)
+        private readonly AzureSQLAccess _azureSQLAccess;
+        private readonly Driver _driver;
+
+        public TripSummaryPage(TimeSpan tripDuration, int tripScore, List<SpeedRecord> exceedingSpeedRecords, Driver driver)
         {
             InitializeComponent();
+            _azureSQLAccess = new AzureSQLAccess();
+            _driver = driver;
 
             if (exceedingSpeedRecords == null || exceedingSpeedRecords.Count == 0)
             {
@@ -17,20 +25,26 @@ namespace Project1
             }
 
             BindingContext = new SpeedViewModel(tripDuration, tripScore, exceedingSpeedRecords);
+            UpdateDriverScore(tripScore);
         }
-    }
 
-    public class SpeedViewModel
-    {
-        public ObservableCollection<SpeedRecord> ExceedingSpeedRecords { get; set; }
-        public string TripDuration { get; set; }
-        public string TripScore { get; set; }
-
-        public SpeedViewModel(TimeSpan tripDuration, int tripScore, List<SpeedRecord> exceedingSpeedRecords)
+        private async void UpdateDriverScore(int tripScore)
         {
-            ExceedingSpeedRecords = new ObservableCollection<SpeedRecord>(exceedingSpeedRecords);
-            TripDuration = $"Duration: {tripDuration:hh\\:mm\\:ss}";
-            TripScore = $"Score: {tripScore}";
+            await _azureSQLAccess.UpdateDriverOverallScoreAsync(_driver.GetAccountEmail(), tripScore); // Use the driver's email for updating
+        }
+
+        public class SpeedViewModel
+        {
+            public ObservableCollection<SpeedRecord> ExceedingSpeedRecords { get; set; }
+            public string TripDuration { get; set; }
+            public string TripScore { get; set; }
+
+            public SpeedViewModel(TimeSpan tripDuration, int tripScore, List<SpeedRecord> exceedingSpeedRecords)
+            {
+                ExceedingSpeedRecords = new ObservableCollection<SpeedRecord>(exceedingSpeedRecords);
+                TripDuration = $"Duration: {tripDuration:hh\\:mm\\:ss}";
+                TripScore = $"Score: {tripScore}";
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ using Microsoft.Maui.Dispatching;
 using InTrip;
 using Project1.Models;
 
-
 namespace Project1
 {
     public partial class MainPage : ContentPage
@@ -16,15 +15,12 @@ namespace Project1
 
         // Assume this driver instance is set somewhere in the application, e.g., AccountPage
         Driver driverInstance;
-   
 
         public MainPage()
         {
             InitializeComponent();
             _locationServices = new LocationServices();
             BindingContext = this;
-
-            
 
             LoadGoogleMap();
             StartUpdatingLocation();
@@ -33,14 +29,15 @@ namespace Project1
         private void DisplayAccountInfo()
         {
             // Display account information (adjust this to fit your UI elements)
-            DriverNameLabel.Text = ($"{driverInstance.GetName()}");
-        }
-        // Method to set the Driver instance and display account info
-         public void SetDriverInstance(Driver driver) { 
-            driverInstance = driver; 
-            DisplayAccountInfo(); 
+            DriverNameLabel.Text = $"{driverInstance.GetName()}";
         }
 
+        // Method to set the Driver instance and display account info
+        public void SetDriverInstance(Driver driver)
+        {
+            driverInstance = driver;
+            DisplayAccountInfo();
+        }
 
         private async void LoadGoogleMap()
         {
@@ -164,9 +161,8 @@ namespace Project1
 
         private async void OnButtonClicked(object sender, EventArgs e)
         {
-            // Navigate to InTripPage
-            await Navigation.PushAsync(new InTripPage());
-
+            // Navigate to InTripPage with the driver instance
+            await Navigation.PushAsync(new InTripPage(driverInstance));
         }
     }
 }

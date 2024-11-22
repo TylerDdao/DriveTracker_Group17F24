@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Project1;
 using SkiaSharp.Views.Maui.Controls;
+using Project1.Models;
 
 namespace InTrip
 {
@@ -12,11 +13,13 @@ namespace InTrip
         private readonly LocationServices _locationServices = new LocationServices();
         private readonly SpeedLimitServices _speedLimitServices = new SpeedLimitServices();
         private Trip currentTrip;
+        private Driver _driver; // Add this field to store the driver information
 
-        public InTripPage()
+        public InTripPage(Driver driver) // Modify the constructor to take the Driver object
         {
             InitializeComponent();
             currentTrip = new Trip();
+            _driver = driver; // Store the driver information
             StartListeningForLocationUpdates();
         }
 
@@ -62,8 +65,8 @@ namespace InTrip
                 currentTrip.CalculateScore(); // Calculate the trip score
                 await DisplayAlert("Trip ended", "Location updates stopped.", "Ok");
 
-                // Navigate to TripSummaryPage and pass the trip data
-                await Navigation.PushAsync(new TripSummaryPage(currentTrip.Duration, currentTrip.Score, currentTrip.ExceedingSpeedRecords));
+                // Navigate to TripSummaryPage and pass the trip data along with the driver information
+                await Navigation.PushAsync(new TripSummaryPage(currentTrip.Duration, currentTrip.Score, currentTrip.ExceedingSpeedRecords, _driver));
             }
             catch (Exception ex)
             {
