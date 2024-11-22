@@ -96,16 +96,4 @@
 	  </MauiXaml>
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
-	  <PackageReference Include="Xamarin.Firebase.Analytics">
-	    <Version>122.1.2.1</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.Firebase.Auth">
-	    <Version>123.1.0.1</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.Firebase.Storage">
-	    <Version>121.0.1.1</Version>
-	  </PackageReference>
-	</ItemGroup>
-
 </Project>
