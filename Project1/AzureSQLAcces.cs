@@ -1,24 +1,32 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
-using Project1.Services;
-using Microsoft.Maui.Controls;
-using System;
-using System.Threading.Tasks;
-using Project1;
-using SkiaSharp.Views.Maui.Controls;
-using System.Data;
 
 namespace Project1.Data
 {
     public class AzureSQLAccess
     {
         private readonly string connectionString;
-        
 
         public AzureSQLAccess()
         {
             // Connection string with SQL authentication
             connectionString = "Server=tcp:dts.database.windows.net,1433;Initial Catalog=DB_DriveTracker;Persist Security Info=False;User ID=dts-admin;Password=Password123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        }
+
+        public async Task<bool> IsDuplicateEmailAsync(string email)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                await conn.OpenAsync();
+                string query = "SELECT Email FROM Drivers WHERE Email = @Email";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    return await reader.ReadAsync(); // If a row is found, email is a duplicate
+                }
+            }
         }
 
         public async Task InsertDriverAsync(Driver driver, Account account)
@@ -44,8 +52,6 @@ namespace Project1.Data
 
         public async Task UpdateDriverOverallScoreAsync(string email, int newOverallScore)
         {
-           
-
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 await conn.OpenAsync();
