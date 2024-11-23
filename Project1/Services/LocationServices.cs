@@ -9,29 +9,36 @@ namespace Project1.Services
 {
     public class LocationServices
     {
-        
-        //get current location 
+        // Get current location
         private CancellationTokenSource _cancelTokenSource;
         private bool _isCheckingLocation;
         public event EventHandler<DeviceLocation> LocationChanged;
+
         public async Task GetCurrentLocation()
         {
             try
             {
                 _isCheckingLocation = true;
 
-                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(30));
 
                 _cancelTokenSource = new CancellationTokenSource();
 
-                Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+                Location location = await Geolocation.GetLocationAsync(request, _cancelTokenSource.Token);
 
                 if (location != null)
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
+                {
+                    // Create DeviceLocation object with the latitude and longitude
+                    var deviceLocation = new DeviceLocation(location.Latitude, location.Longitude, location.Speed ?? 0.0);
+
+                    // Trigger the LocationChanged event
+                    LocationChanged?.Invoke(this, deviceLocation);
+                }
             }
             catch (Exception ex)
             {
-                // Unable to get location
+                // Handle error here
+                Console.WriteLine($"Error getting location: {ex.Message}");
             }
             finally
             {
@@ -44,7 +51,8 @@ namespace Project1.Services
             if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
                 _cancelTokenSource.Cancel();
         }
-        //Lister for location 
+
+        // Listen for location updates
         public async Task OnStartListening()
         {
             try
@@ -71,10 +79,11 @@ namespace Project1.Services
 
                 // Fetch initial location to avoid default fallback
                 var initialLocation = await Geolocation.GetLocationAsync(
-                    new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(5))
+                    new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(30))
                 );
                 Geolocation.LocationChanged += Geolocation_LocationChanged;
-                var request = new GeolocationListeningRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(1));
+
+                var request = new GeolocationListeningRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(30));
                 var success = await Geolocation.StartListeningForegroundAsync(request);
 
                 if (!success)
@@ -88,7 +97,6 @@ namespace Project1.Services
                         );
                     });
                 }
-                
             }
             catch (Exception ex)
             {
@@ -100,29 +108,25 @@ namespace Project1.Services
         void Geolocation_LocationChanged(object sender, GeolocationLocationChangedEventArgs e)
         {
             // Process e.Location to get the new location
-            var deviceLocation = new DeviceLocation(e.Location.Latitude, e.Location.Longitude,e.Location.Speed??0.0);
+            var deviceLocation = new DeviceLocation(e.Location.Latitude, e.Location.Longitude, e.Location.Speed ?? 0.0);
 
-            if (deviceLocation != null)
-            {
-                LocationChanged?.Invoke(this, deviceLocation);
-            }
-
-
+            // Trigger the LocationChanged event when location changes
+            LocationChanged?.Invoke(this, deviceLocation);
         }
 
-        //stop listening to location 
+        // Stop listening for location updates
         public void OnStopListening()
         {
             try
             {
                 Geolocation.LocationChanged -= Geolocation_LocationChanged;
                 Geolocation.StopListeningForeground();
-                string status = "Stopped listening for foreground location updates";
                 _isCheckingLocation = false;
             }
             catch (Exception ex)
             {
                 // Unable to stop listening for location changes
+                Console.WriteLine($"Error stopping location listening: {ex.Message}");
             }
         }
     }

@@ -59,6 +59,7 @@ namespace Project1
             // Navigate to SecondPage
             await Navigation.PushAsync(new InTripPage());
         }
+  
 
     }
 

@@ -3,47 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InTrip.InTripPage"
              Title="On Trip">
-    <VerticalStackLayout>
-        <StackLayout Margin="10" Spacing="25" BackgroundColor="Aquamarine">
-            <Label Text="Current Speed:" FontSize="Large" Margin="5" />
-            <Label x:Name="CurrentSpeedLabel" FontSize="Large" Text="-- km/h" Margin="5" />
+    <VerticalStackLayout Spacing="22">
+     
+        <StackLayout Padding="10" Spacing="20" BackgroundColor="AliceBlue">
+           
+            <Label Text="Current Speed:" FontSize="Medium" Margin="5" />
+            <Label x:Name="CurrentSpeedLabel" FontSize="Medium" Text="-- km/h" Margin="5" />
 
-            <Label Text="Speed Limit:" FontSize="Large" Margin="5" />
-            <Label x:Name="SpeedLimitLabel" FontSize="Large" Text="Unknown" Margin="5" />
-            <Label Text=" Latitude: " x:Name="LatitudeText"/>
-            <Label Text=" Longitude: " x:Name="LongitudeText"/>
+            <Label Text="Speed Limit:" FontSize="Medium" Margin="5" />
+            <Label x:Name="SpeedLimitLabel" FontSize="Medium" Text="Unknown" Margin="5" />
 
-            
+            <Label Text="Latitude:" FontSize="Medium" x:Name="LatitudeText" Margin="5"/>
+            <Label Text="Longitude:" FontSize="Medium" x:Name="LongitudeText" Margin="5"/>
         </StackLayout>
-        <StackLayout Margin="100" Spacing="10">
-            <Button   WidthRequest="250" 
-                      HeightRequest="80" 
-                      Text="End Trip" 
-                      Clicked="OnEndTripButtonClicked" 
-                      BackgroundColor="DarkRed"
-                      FontSize="Header"/>
-            
+
+        <!-- End Trip Button -->
+        <StackLayout HorizontalOptions="Center" Padding="10" Spacing="20">
+            <Button
+            WidthRequest="250" 
+            HeightRequest="60" 
+            Text="End Trip" 
+            Clicked="OnEndTripButtonClicked" 
+            BackgroundColor="DarkRed" 
+            FontSize="Medium" 
+            TextColor="White"/>
         </StackLayout>
-        
-           <HorizontalStackLayout Spacing="40">
+           <Label Text="" HeightRequest="150"/>
+        <!-- Bottom Button Bar -->
+        <HorizontalStackLayout Spacing="40" VerticalOptions="EndAndExpand" HorizontalOptions="Center" Padding="20">
+           
             <Button 
-                Margin="10"
-  
-                WidthRequest="80"
-                HeightRequest="45"
-                VerticalOptions="FillAndExpand"/>
+            Text="Home" 
+            Clicked="HomeClicked"
+            WidthRequest="80" 
+            HeightRequest="50" 
+            BackgroundColor="#4682B4" 
+            TextColor="White" 
+            FontSize="Medium"/>
+
             <Button 
-                Margin="10"
-                WidthRequest="80"
-                HeightRequest="45"
-                VerticalOptions="FillAndExpand"
-                />
+            Text="Trip" 
+            WidthRequest="80" 
+            HeightRequest="50" 
+            BackgroundColor="#4682B4" 
+            TextColor="White" 
+            FontSize="Medium"/>
+
             <Button 
-                Margin="10"
-                WidthRequest="80"
-                HeightRequest="45"
-                VerticalOptions="FillAndExpand"
-    />
-        </HorizontalStackLayout>          
+            Text="Setting" 
+            WidthRequest="90" 
+            HeightRequest="50" 
+            BackgroundColor="#4682B4" 
+            TextColor="White" 
+            FontSize="Subtitle" />
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
