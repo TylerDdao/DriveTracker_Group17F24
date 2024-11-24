@@ -18,13 +18,16 @@
                    VerticalOptions="Center"/>
         </HorizontalStackLayout>
 
-        <Label Text="Centered Label"
-           HorizontalOptions="Center"
-           VerticalOptions="Center" />
-        <WebView x:Name="GoogleMapWebView" 
-            HeightRequest="300"
-            WidthRequest="300" 
+        <Border Stroke="MediumPurple"
+        StrokeThickness="4"
+        StrokeShape="RoundRectangle 10,10,10,10"
+        Margin="0,10,0,0"
+        HorizontalOptions="Center">
+            <WebView x:Name="GoogleMapWebView" 
+            HeightRequest="350"
+            WidthRequest="350" 
             HorizontalOptions="Center"/>
+        </Border>
 
         <Button Text="Start Trip"
                 BackgroundColor="MediumPurple"
@@ -36,6 +39,36 @@
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
                 Clicked="OnButtonClicked" />
+        
+
+        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="10,0,0,10" Spacing="10">
+            <Button Text="Home"
+        BackgroundColor="MediumPurple"
+        TextColor="White"
+        Margin="0,10,0,0"
+        FontSize="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        Clicked="OnButtonClicked" />
+
+            <Button Text="Trip history"
+        BackgroundColor="MediumPurple"
+        TextColor="White"
+        Margin="0,10,0,0"
+        FontSize="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        Clicked="OnButtonClicked" />
+
+            <Button Text="Settings"
+        BackgroundColor="MediumPurple"
+        TextColor="White"
+        Margin="0,10,0,0"
+        FontSize="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        Clicked="OnButtonClicked" />        
+        </HorizontalStackLayout>
     </StackLayout>
 
 </ContentPage>
