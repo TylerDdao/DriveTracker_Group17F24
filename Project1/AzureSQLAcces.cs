@@ -12,7 +12,51 @@ namespace Project1.Data
             // Connection string with SQL authentication
             connectionString = "Server=tcp:dts.database.windows.net,1433;Initial Catalog=DB_DriveTracker;Persist Security Info=False;User ID=dts-admin;Password=Password123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         }
+        //Email and Password login check
+        public async Task<bool> IsDriverValidAsync(string email, string password)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                await conn.OpenAsync();
+                string query = "SELECT COUNT(1) FROM Drivers WHERE Email = @Email AND Password = @Password";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Password", password);
 
+                int count = (int)await cmd.ExecuteScalarAsync();
+                return count > 0;
+            }
+        }
+        //Fetch feilds.
+        public async Task<Driver> GetDriverByEmailAsync(string email)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                await conn.OpenAsync();
+                string query = "SELECT FirstName, LastName, Email, Address, PostalCode, LicenseNumber, OverallScore FROM Drivers WHERE Email = @Email";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        var driver = new Driver(
+                            reader.GetString(0), // FirstName
+                            reader.GetString(1), // LastName
+                            reader.GetString(2), // Email
+                            reader.GetString(3), // Address
+                            reader.GetString(4), // PostalCode
+                            reader.GetString(5), // LicenseNumber
+                            reader.GetInt32(6)   // OverallScore
+                        );
+                        return driver;
+                    }
+                    return null;
+                }
+            }
+        }
+        
         public async Task<bool> IsDuplicateEmailAsync(string email)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))

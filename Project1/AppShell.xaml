@@ -5,22 +5,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Project1"
     Shell.FlyoutBehavior="Disabled"
-    Shell.TitleColor ="red"
+    Shell.TitleColor="red"
     Title="Project1">
 
     <ShellContent 
-    Title="Account" 
-    ContentTemplate="{DataTemplate local:AccountPage}" 
-    Route="AccountPage"/>
-    
+        Title="Login" 
+        ContentTemplate="{DataTemplate local:LoginPage}" 
+        Route="LoginPage"/>
+
+    <ShellContent 
+        Title="Account" 
+        ContentTemplate="{DataTemplate local:AccountPage}" 
+        Route="AccountPage"/>
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage"
-        />
+        Route="MainPage"/>
+
     <ShellContent 
-Title="Account" 
-ContentTemplate="{DataTemplate local:TripSummaryPage}" 
-Route="TripSummaryPage"/>
-    
+        Title="Trip Summary" 
+        ContentTemplate="{DataTemplate local:TripSummaryPage}" 
+        Route="TripSummaryPage"/>
+
 </Shell>

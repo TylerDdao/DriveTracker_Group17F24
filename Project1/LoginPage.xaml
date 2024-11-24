@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project1.LoginPage"
+             >
+
+    <StackLayout  Spacing="30" HorizontalOptions="Center" VerticalOptions="Center">
+        <Label Text="Login Into Account:" FontSize="Large" TextColor="LimeGreen" />
+        <Label Text="Email" FontSize="Medium" />
+        <Entry x:Name="EmailEntry" Placeholder="Enter your email" WidthRequest="250"
+HeightRequest="40"/>
+        <Label x:Name="EmailErrorLabel" TextColor="Red" IsVisible="False"/>
+        <Label Text="Password" FontSize="Medium" />
+        <Entry x:Name="PasswordEntry" Placeholder="Enter your password" IsPassword="True" WidthRequest="250"
+HeightRequest="40"/>
+        <Label x:Name="PasswordErrorLabel" TextColor="Red" IsVisible="False"/>
+        <Button Text="Login" Clicked="OnLoginButtonClicked"  HeightRequest="50"
+ WidthRequest="180" />
+
+        
+        
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Label Text="Don't have an account? " />
+            <Label Text=" Register" TextColor="Blue" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnRegisterTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+
+    </StackLayout>
+
+</ContentPage>

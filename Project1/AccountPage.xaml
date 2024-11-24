@@ -8,13 +8,12 @@
         <Frame BackgroundColor="Azure"  HorizontalOptions="Fill" VerticalOptions="Center" Padding="50,10">
             <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="30">
                 <!-- Title Label -->
-                <Label Text="Register Driver Account" 
+                <Label Text="Register Driver Account:" 
                     HorizontalOptions="Center" 
                     VerticalOptions="Start" 
                     BackgroundColor="white" 
-                    TextColor="LawnGreen"                   
+                    TextColor="LimeGreen"                   
                     FontSize="Large"                 
-                    FontAttributes="Bold"
                     Padding="10,20"/>
                 <!-- First Name Field -->
                 <Entry
