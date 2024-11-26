@@ -159,8 +159,12 @@ namespace Project1
 
             GoogleMapWebView.Eval(script);
         }
+        private async void OnButtonStartClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new InTripPage(driverInstance));
+        }
 
-        private async void OnButtonClicked(object sender, EventArgs e)
+        private async void OnButtonHomeClicked(object sender, EventArgs e)
         {
             //Prompt user to show that they are already on the page.
             await DisplayAlert("Attention", "Currently on the Home Page.", "OK");

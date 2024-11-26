@@ -34,7 +34,7 @@
                 FontSize="30"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Clicked="OnButtonStartClicked" />
 
         <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="10,0,0,10" Spacing="10">
             <Button Text="Home"
@@ -44,7 +44,7 @@
                     FontSize="15"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Clicked="OnButtonClicked" />
+                    Clicked="OnButtonHomeClicked" />
 
             <Button Text="Trip history"
                     BackgroundColor="LimeGreen"
