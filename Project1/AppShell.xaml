@@ -27,5 +27,8 @@
         Title="Trip Summary" 
         ContentTemplate="{DataTemplate local:TripSummaryPage}" 
         Route="TripSummaryPage"/>
-
+    <ShellContent 
+    Title="Trip History" 
+    ContentTemplate="{DataTemplate local:TripHistoryPage}" 
+    Route="TripHistoryPage"/>
 </Shell>

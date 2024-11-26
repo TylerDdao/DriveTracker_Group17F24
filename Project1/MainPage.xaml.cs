@@ -164,5 +164,10 @@ namespace Project1
             // Navigate to InTripPage with the driver instance
             await Navigation.PushAsync(new InTripPage(driverInstance));
         }
+        private async void OnButtonTripClicked(object sender, EventArgs e)
+        {
+            // Navigate to InTripPage with the driver instance
+            await Navigation.PushAsync(new TripHistoryPage());
+        }
     }
 }

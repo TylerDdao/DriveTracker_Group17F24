@@ -53,7 +53,7 @@
                     FontSize="15"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Clicked="OnButtonClicked" />
+                    Clicked="OnButtonTripClicked" />
 
             <Button Text="Settings"
                     BackgroundColor="LimeGreen"
