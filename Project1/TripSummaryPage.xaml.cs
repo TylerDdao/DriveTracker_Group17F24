@@ -46,5 +46,11 @@ namespace Project1
                 TripScore = $"Score: {tripScore}";
             }
         }
+
+        private async void OnButtonClicked(object sender, EventArgs e)
+        {
+            // Navigate to InTripPage with the driver instance
+            await Navigation.PushAsync(new MainPage());
+        }
     }
 }
