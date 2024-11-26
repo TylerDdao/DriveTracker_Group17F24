@@ -62,7 +62,7 @@
                     FontSize="15"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Clicked="OnButtonClicked" />
+                    Clicked="OnButtonSettingsClicked" />
         </HorizontalStackLayout>
     </StackLayout>
 

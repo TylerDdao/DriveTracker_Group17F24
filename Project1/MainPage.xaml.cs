@@ -13,6 +13,7 @@ namespace Project1
         private readonly LocationServices _locationServices;
         private IDispatcherTimer _timer;
 
+
         // Assume this driver instance is set somewhere in the application, e.g., AccountPage
         Driver driverInstance;
 
@@ -161,13 +162,18 @@ namespace Project1
 
         private async void OnButtonClicked(object sender, EventArgs e)
         {
-            // Navigate to InTripPage with the driver instance
-            await Navigation.PushAsync(new InTripPage(driverInstance));
+            //Prompt user to show that they are already on the page.
+            await DisplayAlert("Attention", "Currently on the Home Page.", "OK");
         }
         private async void OnButtonTripClicked(object sender, EventArgs e)
         {
             // Navigate to InTripPage with the driver instance
             await Navigation.PushAsync(new TripHistoryPage());
+        }
+
+        private async void OnButtonSettingsClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new SettingsPage());
         }
     }
 }

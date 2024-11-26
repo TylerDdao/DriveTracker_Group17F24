@@ -87,8 +87,10 @@ namespace Project1
 
         private async void OnRegisterTapped(object sender, EventArgs e)
         {
+            
             // Navigate to the registration page
             await Navigation.PushAsync(new AccountPage());
+
         }
     }
 }

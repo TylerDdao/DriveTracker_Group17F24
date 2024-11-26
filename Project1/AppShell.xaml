@@ -31,4 +31,8 @@
     Title="Trip History" 
     ContentTemplate="{DataTemplate local:TripHistoryPage}" 
     Route="TripHistoryPage"/>
+    <ShellContent 
+Title="Trip Setting" 
+ContentTemplate="{DataTemplate local:SettingsPage}" 
+Route="SettingsPage"/>
 </Shell>
