@@ -177,7 +177,10 @@ namespace Project1
 
         private async void OnButtonSettingsClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new SettingsPage());
+            var settingPage = new SettingsPage();
+            settingPage.SetDriverInstance(driverInstance);
+            await Navigation.PushAsync(settingPage);
+            
         }
     }
 }

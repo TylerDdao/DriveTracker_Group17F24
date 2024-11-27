@@ -5,10 +5,35 @@
              Title="SettingsPage">
     <StackLayout>
 
-        <HorizontalStackLayout HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,0,0">
-            <Image Source="car.png" WidthRequest="50" HeightRequest="50"/>
+        <VerticalStackLayout HorizontalOptions="Center">
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <Image Source="car.png" WidthRequest="100" HeightRequest="100"/>
+                <Label x:Name="DriverName" FontSize="50" TextColor="Black" Margin="10,0,0,0"/>
+            </HorizontalStackLayout>
 
-        </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <Label Text="Edit Account" FontSize="50" TextColor="Black" Margin="0, 10,0,0"/>
+            </HorizontalStackLayout>
+
+            <Label Text="Email" FontSize="30" TextColor="Black"/>
+            <Entry x:Name="emailEntry" WidthRequest="600"/>
+
+            <Label Text="Password" FontSize="30" TextColor="Black"/>
+            <Entry x:Name="passwordEntry" IsPassword="True" WidthRequest="600"/>
+
+            <Label Text="Driver License (Read Only)" FontSize="30" TextColor="Black"/>
+            <Entry x:Name="driverLincense" WidthRequest="600" IsReadOnly="true"/>
+
+        </VerticalStackLayout>
+
+        <Button Text="Save changes"
+            BackgroundColor="LimeGreen"
+            TextColor="White"
+            Margin="0,10,0,0"
+            FontSize="40"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Clicked="OnButtonClicked" />
 
 
 
