@@ -12,7 +12,8 @@ namespace Project1.Data
             // Connection string with SQL authentication
             connectionString = "Server=tcp:dts.database.windows.net,1433;Initial Catalog=DB_DriveTracker;Persist Security Info=False;User ID=dts-admin;Password=Password123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         }
-        //Email and Password login check
+
+        // Email and Password login check
         public async Task<bool> IsDriverValidAsync(string email, string password)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -27,7 +28,8 @@ namespace Project1.Data
                 return count > 0;
             }
         }
-        //Fetch feilds.
+
+        // Fetch driver data by email
         public async Task<Driver> GetDriverByEmailAsync(string email)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -56,7 +58,7 @@ namespace Project1.Data
                 }
             }
         }
-        
+
         public async Task<bool> IsDuplicateEmailAsync(string email)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -89,6 +91,36 @@ namespace Project1.Data
                 cmd.Parameters.AddWithValue("@PostalCode", driver.GetPostalCode());
                 cmd.Parameters.AddWithValue("@LicenseNumber", driver.GetDriverLicenseNumber());
                 cmd.Parameters.AddWithValue("@OverallScore", driver.GetOverallScore());
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        // Update driver data
+        public async Task UpdateDriverAsync(Driver driver, Account account)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                await conn.OpenAsync();
+                string query = @"
+                    UPDATE Drivers
+                    SET FirstName = @FirstName,
+                        LastName = @LastName,
+                        Address = @Address,
+                        PostalCode = @PostalCode,
+                        LicenseNumber = @LicenseNumber,
+                        Password = @Password -- Ensure this is hashed properly
+                    WHERE Email = @Email";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@FirstName", driver.GetName());
+                cmd.Parameters.AddWithValue("@LastName", driver.getLastName());
+                cmd.Parameters.AddWithValue("@Address", driver.GetAddress());
+                cmd.Parameters.AddWithValue("@PostalCode", driver.GetPostalCode());
+                cmd.Parameters.AddWithValue("@LicenseNumber", driver.GetDriverLicenseNumber());
+                cmd.Parameters.AddWithValue("@Password", account.GetPassword());
+                cmd.Parameters.AddWithValue("@Email", driver.GetAccountEmail());
 
                 await cmd.ExecuteNonQueryAsync();
             }

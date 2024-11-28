@@ -5,32 +5,77 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Dispatching;
 using InTrip;
 using Project1.Models;
+using Project1.Data;
 
 namespace Project1
 {
     public partial class MainPage : ContentPage
     {
         private readonly LocationServices _locationServices;
+        private readonly AzureSQLAccess _azureSQLAccess;
         private IDispatcherTimer _timer;
 
+        private Driver driverInstance;
 
-        // Assume this driver instance is set somewhere in the application, e.g., AccountPage
-        Driver driverInstance;
+        // Constructor that accepts email parameter
+        public MainPage(string email)
+        {
+            InitializeComponent();
+            _locationServices = new LocationServices();
+            _azureSQLAccess = new AzureSQLAccess();
+            BindingContext = this;
+
+            LoadGoogleMap();
+            StartUpdatingLocation();
+
+            SetDriverInstanceByEmail(email); // Fetch and set the driver instance by email
+        }
 
         public MainPage()
         {
             InitializeComponent();
             _locationServices = new LocationServices();
+            _azureSQLAccess = new AzureSQLAccess();
             BindingContext = this;
 
             LoadGoogleMap();
             StartUpdatingLocation();
         }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await FetchDriverInfo(); // Fetch driver information when the page appears
+        }
+
         private void DisplayAccountInfo()
         {
             // Display account information (adjust this to fit your UI elements)
-            DriverNameLabel.Text = $"{driverInstance.GetName()}";
+            if (driverInstance != null)
+            {
+                DriverNameLabel.Text = driverInstance.GetName();
+            }
+        }
+
+        // Method to fetch the driver instance by email
+        private async Task SetDriverInstanceByEmail(string email)
+        {
+            driverInstance = await _azureSQLAccess.GetDriverByEmailAsync(email);
+            if (driverInstance != null)
+            {
+                DisplayAccountInfo();
+            }
+        }
+
+        // Method to fetch the driver instance from the database
+        private async Task FetchDriverInfo()
+        {
+            // Assume accountInstance is set somewhere in the application
+            if (driverInstance != null)
+            {
+                driverInstance = await _azureSQLAccess.GetDriverByEmailAsync(driverInstance.GetAccountEmail());
+                DisplayAccountInfo();
+            }
         }
 
         // Method to set the Driver instance and display account info
@@ -159,6 +204,7 @@ namespace Project1
 
             GoogleMapWebView.Eval(script);
         }
+
         private async void OnButtonStartClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new InTripPage(driverInstance));
@@ -166,21 +212,19 @@ namespace Project1
 
         private async void OnButtonHomeClicked(object sender, EventArgs e)
         {
-            //Prompt user to show that they are already on the page.
+            // Prompt user to show that they are already on the page.
             await DisplayAlert("Attention", "Currently on the Home Page.", "OK");
         }
+
         private async void OnButtonTripClicked(object sender, EventArgs e)
         {
             // Navigate to InTripPage with the driver instance
-            await Navigation.PushAsync(new TripHistoryPage());
+            await Navigation.PushAsync(new TripHistoryPage(driverInstance.GetAccountEmail()));
         }
 
         private async void OnButtonSettingsClicked(object sender, EventArgs e)
         {
-            var settingPage = new SettingsPage();
-            settingPage.SetDriverInstance(driverInstance);
-            await Navigation.PushAsync(settingPage);
-            
+            await Navigation.PushAsync(new SettingsPage(driverInstance.GetAccountEmail()));
         }
     }
 }

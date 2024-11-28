@@ -2,69 +2,88 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project1.SettingsPage"
-             Title="SettingsPage">
-    <StackLayout>
-
-        <VerticalStackLayout HorizontalOptions="Center">
-            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="car.png" WidthRequest="100" HeightRequest="100"/>
-                <Label x:Name="DriverName" FontSize="50" TextColor="Black" Margin="10,0,0,0"/>
-            </HorizontalStackLayout>
-
-            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                <Label Text="Edit Account" FontSize="50" TextColor="Black" Margin="0, 10,0,0"/>
-            </HorizontalStackLayout>
-
-            <Label Text="Email" FontSize="30" TextColor="Black"/>
-            <Entry x:Name="emailEntry" WidthRequest="600"/>
-
-            <Label Text="Password" FontSize="30" TextColor="Black"/>
-            <Entry x:Name="passwordEntry" IsPassword="True" WidthRequest="600"/>
-
-            <Label Text="Driver License (Read Only)" FontSize="30" TextColor="Black"/>
-            <Entry x:Name="driverLincense" WidthRequest="600" IsReadOnly="true"/>
-
-        </VerticalStackLayout>
-
-        <Button Text="Save changes"
-            BackgroundColor="LimeGreen"
-            TextColor="White"
-            Margin="0,10,0,0"
-            FontSize="40"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            Clicked="OnButtonClicked" />
-
-
-
-        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="10,0,0,10" Spacing="10">
-            <Button Text="Home"
-            BackgroundColor="LimeGreen"
-            TextColor="White"
-            Margin="0,10,0,0"
-            FontSize="15"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            Clicked="OnButtonClicked" />
-
-            <Button Text="Trip history"
-            BackgroundColor="LimeGreen"
-            TextColor="White"
-            Margin="0,10,0,0"
-            FontSize="15"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            Clicked="OnButtonTripClicked" />
-
-            <Button Text="Settings"
-            BackgroundColor="LimeGreen"
-            TextColor="White"
-            Margin="0,10,0,0"
-            FontSize="15"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            Clicked="OnButtonSettingsClicked" />
-        </HorizontalStackLayout>
-    </StackLayout>
-
+             BackgroundColor="White">
+    <ScrollView>
+        <Frame BackgroundColor="Azure"  HorizontalOptions="Fill" VerticalOptions="Center" Padding="50,10">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="30">
+                <!-- Title Label -->
+                <Label Text="Update Driver Information:" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Start" 
+                       BackgroundColor="White" 
+                       TextColor="LimeGreen" 
+                       FontSize="Large" 
+                       Padding="10,20"/>
+                <!-- First Name Field -->
+                <Entry x:Name="FirstNameEntry"
+                       Placeholder="Enter your first name"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="FirstNameErrorLabel" Text="First name is required." TextColor="Red" IsVisible="False"/>
+                <!-- Last Name Field -->
+                <Entry x:Name="LastNameEntry"
+                       Placeholder="Enter your last name"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="LastNameErrorLabel" Text="Last name is required." TextColor="Red" IsVisible="False"/>
+                <!-- Email Field -->
+                <Entry x:Name="EmailEntry"
+                       Placeholder="Enter your email"
+                       Keyboard="Email"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="EmailErrorLabel" Text="Email is required." TextColor="Red" IsVisible="False"/>
+                <!-- Address Field -->
+                <Entry x:Name="AddressEntry"
+                       Placeholder="Enter your address"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="AddressErrorLabel" Text="Address is required." TextColor="Red" IsVisible="False"/>
+                <!-- Postal Code Field -->
+                <Entry x:Name="PostalCodeEntry"
+                       Placeholder="Enter your postal code"
+                       Keyboard="Text"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="PostalCodeErrorLabel" Text="Postal code is required." TextColor="Red" IsVisible="False"/>
+                <!-- Driver License Number Field -->
+                <Entry x:Name="LicenseNumberEntry"
+                       Placeholder="Enter your driver license number"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="LicenseNumberErrorLabel" Text="Driver license number is required." TextColor="Red" IsVisible="False"/>
+                <!-- Password Field -->
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Enter your password"
+                       IsPassword="True"
+                       ReturnType="Done"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="PasswordErrorLabel" Text="Password is required." TextColor="Red" IsVisible="False"/>
+                <!-- Update Button -->
+                <Button x:Name="UpdateButton"
+                        Text="Update Information"
+                        Clicked="OnUpdateClicked"
+                        HeightRequest="50"
+                        WidthRequest="180"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        BackgroundColor="LimeGreen"/>
+            </VerticalStackLayout>
+        </Frame>
+    </ScrollView>
 </ContentPage>

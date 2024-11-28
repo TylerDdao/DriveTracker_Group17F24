@@ -22,7 +22,9 @@
         <Label x:Name="SpeedLimitLabel" FontSize="20" BackgroundColor="LimeGreen"/>
 
         <!-- End Trip Button -->
-        <Button Text="End Trip" Clicked="OnEndTripButtonClicked" BackgroundColor="LimeGreen" HeightRequest="70" WidthRequest="150"/>
+        <Button Text="End Trip" Clicked="OnEndTripButtonClicked" BackgroundColor="LimeGreen" HeightRequest="70"
+WidthRequest="300"
+FontSize="30"/>
 
     </StackLayout>
 </ContentPage>

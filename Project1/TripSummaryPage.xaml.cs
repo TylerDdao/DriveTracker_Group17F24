@@ -49,8 +49,8 @@ namespace Project1
 
         private async void OnButtonClicked(object sender, EventArgs e)
         {
-            // Navigate to InTripPage with the driver instance
-            await Navigation.PushAsync(new MainPage());
+            // Navigate to Main page with the driver's email
+            await Navigation.PushAsync(new MainPage(_driver.GetAccountEmail()));
         }
     }
 }
