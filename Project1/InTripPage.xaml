@@ -4,7 +4,7 @@
              x:Class="InTrip.InTripPage">
 
     <StackLayout Padding="10" Spacing="20">
-
+        <Label Text="Currently in trip, drive safe!" FontSize="30" />
         <!-- Display Latitude -->
         <Label Text="Latitude:" FontSize="20" />
         <Label x:Name="LatitudeText" FontSize="20" BackgroundColor="LimeGreen"/>
