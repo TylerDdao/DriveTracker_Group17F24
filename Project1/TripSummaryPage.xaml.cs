@@ -1,4 +1,3 @@
-using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Project1.Data;
@@ -26,11 +25,19 @@ namespace Project1
 
             BindingContext = new SpeedViewModel(tripDuration, tripScore, exceedingSpeedRecords);
             UpdateDriverScore(tripScore);
+            AddTripRecord(_driver.GetAccountEmail(), tripScore);
         }
 
         private async void UpdateDriverScore(int tripScore)
         {
             await _azureSQLAccess.UpdateDriverOverallScoreAsync(_driver.GetAccountEmail(), tripScore); // Use the driver's email for updating
+        }
+
+        private async void AddTripRecord(string email, int tripScore)
+        {
+            // Generate a trip number or get the latest trip number from the database
+            var tripNumber = new Random().Next(1, 1000); // You should implement a better logic for trip numbers
+            await _azureSQLAccess.AddTripAsync(email, tripNumber, tripScore);
         }
 
         public class SpeedViewModel

@@ -4,13 +4,17 @@
              x:Class="Project1.MainPage">
 
     <StackLayout>
-
+        <Label 
+Text="Current Location"
+FontSize="24"
+FontAttributes="Bold"
+HorizontalOptions="Center" TextColor="LimeGreen"/>
         <HorizontalStackLayout HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,0,0">
             <Image Source="car.png" WidthRequest="50" HeightRequest="50"/>
            
             <Label x:Name="DriverNameLabel"
                    FontSize="20" 
-                   Margin="10,0,0,0"
+                   Margin="0,0,0,0"
                    VerticalOptions="Center"/>
         </HorizontalStackLayout>
 
@@ -36,7 +40,7 @@
                 VerticalOptions="Center"
                 Clicked="OnButtonStartClicked" />
 
-        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="10,0,0,10" Spacing="10">
+        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="0,0,0,10" Spacing="10">
             <Button Text="Home"
                     BackgroundColor="LimeGreen"
                     TextColor="White"

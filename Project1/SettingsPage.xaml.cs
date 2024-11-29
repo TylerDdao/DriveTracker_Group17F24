@@ -9,37 +9,39 @@ namespace Project1
     public partial class SettingsPage : ContentPage
     {
         private readonly AzureSQLAccess _azureSQLAccess;
-        private Account accountInstance;
+        private readonly Account accountInstance;
 
         public SettingsPage(string email)
         {
             InitializeComponent();
             _azureSQLAccess = new AzureSQLAccess();
-            SetFieldsByAccountEmail(email);
+            SetFieldsByAccountEmail(email).ConfigureAwait(false);
+            
         }
 
-        // Method to fetch and set the fields by account email
         public async Task SetFieldsByAccountEmail(string email)
         {
-            accountInstance = new Account(email, ""); // Create an account instance with the email
             var driverInstance = await _azureSQLAccess.GetDriverByEmailAsync(email);
 
             if (driverInstance != null)
             {
-                FirstNameEntry.Text = driverInstance.GetName();
-                LastNameEntry.Text = driverInstance.getLastName();
-                AddressEntry.Text = driverInstance.GetAddress();
-                PostalCodeEntry.Text = driverInstance.GetPostalCode();
-                LicenseNumberEntry.Text = driverInstance.GetDriverLicenseNumber();
-                EmailEntry.Text = email;
+                // Remove spaces from the fields
+                FirstNameEntry.Text = driverInstance.GetName().Replace(" ", "");
+                LastNameEntry.Text = driverInstance.getLastName().Replace(" ", "");
+                AddressEntry.Text = driverInstance.GetAddress().Replace(" ", "");
+                PostalCodeEntry.Text = driverInstance.GetPostalCode().Replace(" ", "");
+                LicenseNumberEntry.Text = driverInstance.GetDriverLicenseNumber().Replace(" ", "");
+                EmailEntry.Text = email.Replace(" ", "");
                 EmailEntry.IsReadOnly = true;  // Make email field view-only
-                PasswordEntry.Text = accountInstance.GetPassword(); // Password can be fetched separately if needed
             }
             else
             {
                 await DisplayAlert("Error", "Driver not found.", "OK");
             }
         }
+
+
+
 
         private async void OnUpdateClicked(object sender, EventArgs e)
         {
@@ -56,7 +58,7 @@ namespace Project1
                     0 // Assuming OverallScore is managed separately
                 );
 
-                accountInstance.GetPassword();
+              
 
                 // Update the driver information in the database
                 await _azureSQLAccess.UpdateDriverAsync(driverInstance, accountInstance);
@@ -75,7 +77,7 @@ namespace Project1
             string address = AddressEntry.Text;
             string postalCode = PostalCodeEntry.Text;
             string licenseNumber = LicenseNumberEntry.Text;
-            string password = PasswordEntry.Text;
+            
 
             // Status of requirements
             bool isValid = true;
@@ -87,8 +89,7 @@ namespace Project1
             AddressErrorLabel.IsVisible = false;
             PostalCodeErrorLabel.IsVisible = false;
             LicenseNumberErrorLabel.IsVisible = false;
-            PasswordErrorLabel.IsVisible = false;
-
+            
 
             // Validate First Name
             if (string.IsNullOrWhiteSpace(firstName))
@@ -112,7 +113,7 @@ namespace Project1
             }
 
             // Validate Postal Code (Canadian Format)
-            if (string.IsNullOrWhiteSpace(postalCode) || !Regex.IsMatch(postalCode, @"^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$"))
+            if (string.IsNullOrWhiteSpace(postalCode) || !Regex.IsMatch(postalCode, @"^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$"))
             {
                 PostalCodeErrorLabel.Text = string.IsNullOrWhiteSpace(postalCode) ? "Postal Code is required." : "Invalid postal code format.";
                 PostalCodeErrorLabel.IsVisible = true;
@@ -126,12 +127,6 @@ namespace Project1
                 isValid = false;
             }
 
-            // Validate Password
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                PasswordErrorLabel.IsVisible = true;
-                isValid = false;
-            }
 
             return isValid;
         }

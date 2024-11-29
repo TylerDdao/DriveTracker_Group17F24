@@ -4,40 +4,60 @@
              x:Class="Project1.TripHistoryPage"
              Title="">
 
-    <StackLayout>
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Padding="1" Spacing="20">
 
-        
+        <!-- Label to display average score -->
+        <Label 
+            x:Name="AverageScoreLabel" 
+            FontSize="24" 
+            FontAttributes="Bold" 
+            HorizontalOptions="Center" 
+            TextColor="LimeGreen" 
+            Margin="0,20,0,20"/>
 
-        
+        <!-- Frame to provide lime green outline box with fixed dimensions -->
+        <Frame BorderColor="Lime" 
+               HasShadow="False" 
+               CornerRadius="5" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" 
+               Padding="10"
+               WidthRequest="300" 
+               HeightRequest="400">
+            <!-- ScrollView to make CollectionView scrollable -->
+            <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <CollectionView x:Name="ItemsCollectionView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Vertical" Padding="10">
+                                <Label Text="{Binding ItemName}" FontSize="18"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Frame>
 
-        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="10,0,0,10" Spacing="10">
+        <!-- Buttons in HorizontalStackLayout -->
+        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="0,10,0,0" Spacing="10">
             <Button Text="Home"
-                BackgroundColor="LimeGreen"
-                TextColor="White"
-                Margin="0,10,0,0"
-                FontSize="15"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Clicked="OnButtonClicked" />
+                    BackgroundColor="LimeGreen"
+                    TextColor="White"
+                    FontSize="15"
+                    Clicked="OnButtonClicked" />
 
             <Button Text="Trip history"
-                BackgroundColor="LimeGreen"
-                TextColor="White"
-                Margin="0,10,0,0"
-                FontSize="15"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Clicked="OnButtonTripClicked" />
+                    BackgroundColor="LimeGreen"
+                    TextColor="White"
+                    FontSize="15"
+                    Clicked="OnButtonTripClicked" />
 
             <Button Text="Settings"
-                BackgroundColor="LimeGreen"
-                TextColor="White"
-                Margin="0,10,0,0"
-                FontSize="15"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Clicked="OnButtonSettingsClicked" />
+                    BackgroundColor="LimeGreen"
+                    TextColor="White"
+                    FontSize="15"
+                    Clicked="OnButtonSettingsClicked" />
         </HorizontalStackLayout>
-    </StackLayout>
+    </VerticalStackLayout>
 
 </ContentPage>

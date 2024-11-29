@@ -32,12 +32,10 @@
                 <Label x:Name="LastNameErrorLabel" Text="Last name is required." TextColor="Red" IsVisible="False"/>
                 <!-- Email Field -->
                 <Entry x:Name="EmailEntry"
-                       Placeholder="Enter your email"
-                       Keyboard="Email"
-                       ReturnType="Next"
+                       Text="View-only text"
                        WidthRequest="250"
                        HeightRequest="40"
-                       BackgroundColor="White"/>
+                       BackgroundColor="Grey"/>
                 <Label x:Name="EmailErrorLabel" Text="Email is required." TextColor="Red" IsVisible="False"/>
                 <!-- Address Field -->
                 <Entry x:Name="AddressEntry"
@@ -64,21 +62,13 @@
                        HeightRequest="40"
                        BackgroundColor="White"/>
                 <Label x:Name="LicenseNumberErrorLabel" Text="Driver license number is required." TextColor="Red" IsVisible="False"/>
-                <!-- Password Field -->
-                <Entry x:Name="PasswordEntry"
-                       Placeholder="Enter your password"
-                       IsPassword="True"
-                       ReturnType="Done"
-                       WidthRequest="250"
-                       HeightRequest="40"
-                       BackgroundColor="White"/>
-                <Label x:Name="PasswordErrorLabel" Text="Password is required." TextColor="Red" IsVisible="False"/>
+                
                 <!-- Update Button -->
                 <Button x:Name="UpdateButton"
                         Text="Update Information"
                         Clicked="OnUpdateClicked"
                         HeightRequest="50"
-                        WidthRequest="180"
+                        WidthRequest="220"
                         FontSize="20"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"

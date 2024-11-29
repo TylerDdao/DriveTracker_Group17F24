@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
 namespace Project1.Data
@@ -59,6 +60,32 @@ namespace Project1.Data
             }
         }
 
+        // Fetch account data by email
+        public async Task<Account> GetAccountByEmailAsync(string email)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                await conn.OpenAsync();
+                string query = "SELECT Email, Password FROM Accounts WHERE Email = @Email";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        var account = new Account(
+                            reader.GetString(0), // Email
+                            reader.GetString(1)  // Password
+                        );
+                        return account;
+                    }
+                    return null;
+                }
+            }
+        }
+
+        // Check for duplicate email
         public async Task<bool> IsDuplicateEmailAsync(string email)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -75,6 +102,7 @@ namespace Project1.Data
             }
         }
 
+        // Insert a new driver
         public async Task InsertDriverAsync(Driver driver, Account account)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -126,6 +154,7 @@ namespace Project1.Data
             }
         }
 
+        // Update driver overall score
         public async Task UpdateDriverOverallScoreAsync(string email, int newOverallScore)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -140,6 +169,7 @@ namespace Project1.Data
             }
         }
 
+        // Delete a driver
         public async Task DeleteDriverAsync(int id)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -152,5 +182,56 @@ namespace Project1.Data
                 await cmd.ExecuteNonQueryAsync();
             }
         }
+
+        // Add a new trip record
+        public async Task AddTripAsync(string email, int tripNumber, int overallScore)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Trips (email, trip_number, overall_score) VALUES (@Email, @TripNumber, @OverallScore)";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@TripNumber", tripNumber);
+                cmd.Parameters.AddWithValue("@OverallScore", overallScore);
+
+                await conn.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        // Fetch trip records by email
+        public async Task<List<TripRecord>> GetTripsByEmailAsync(string email)
+        {
+            var trips = new List<TripRecord>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT trip_number, overall_score FROM Trips WHERE email = @Email";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                await conn.OpenAsync();
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        trips.Add(new TripRecord
+                        {
+                            TripNumber = reader.GetInt32(0),
+                            OverallScore = reader.GetInt32(1)
+                        });
+                    }
+                }
+            }
+            return trips;
+        }
+
+    }
+
+    // Trip record model
+    public class TripRecord
+    {
+        public int TripNumber { get; set; }
+        public int OverallScore { get; set; }
     }
 }

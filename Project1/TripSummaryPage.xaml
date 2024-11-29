@@ -3,42 +3,70 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project1.TripSummaryPage"
              Title="">
-    <VerticalStackLayout Padding="10" Spacing="20">
+
+    <VerticalStackLayout Padding="1" Spacing="40" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+
         <Label 
             Text="Trip Summary"
             FontSize="24"
             FontAttributes="Bold"
-            HorizontalOptions="Center" TextColor="LimeGreen"/>
+            HorizontalOptions="Center" 
+            TextColor="LimeGreen"/>
 
-        <Label 
-            Text="{Binding TripDuration}"
-            FontSize="18"
-            FontAttributes="Bold"
-            Margin="10,0,0,0" BackgroundColor="LimeGreen"/>
+        <!-- Frame to provide lime green outline box with fixed dimensions -->
+        <Frame BorderColor="Lime" 
+               HasShadow="False" 
+               CornerRadius="5" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" 
+               Padding="25"
+               WidthRequest="350" 
+               HeightRequest="400">
 
-        <Label 
-            Text="{Binding TripScore}"
-            FontSize="18"
-            FontAttributes="Bold"
-            Margin="10,0,0,0" BackgroundColor="LimeGreen"/>
+            <!-- StackLayout to display trip summary details -->
+            <StackLayout Spacing="20">
 
-        <Label 
-            Text="Exceeding Speed Violations"
-            FontSize="18"
-            FontAttributes="Bold"
-            Margin="10,0,0,0" BackgroundColor="LimeGreen"/>
+                <!-- Display Trip Duration -->
+                <Label Text="{Binding TripDuration}" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       Margin="10,0,0,0" 
+                       BackgroundColor="LimeGreen"/>
 
-        <CollectionView ItemsSource="{Binding ExceedingSpeedRecords}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Orientation="Horizontal" Padding="10">
-                        <Label Text="{Binding Timestamp, StringFormat='{0:HH:mm:ss}'}" />
-                        <Label Text="{Binding Speed, StringFormat='{0} km/h'}" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                <!-- Display Trip Score -->
+                <Label Text="{Binding TripScore}" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       Margin="10,0,0,0" 
+                       BackgroundColor="LimeGreen"/>
 
+                <!-- Display Exceeding Speed Violations Header -->
+                <Label Text="Exceeding Speed Violations:" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       Margin="10,0,0,0" 
+                       BackgroundColor="LimeGreen"/>
+
+                <!-- ScrollView to make CollectionView scrollable -->
+                <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <CollectionView ItemsSource="{Binding ExceedingSpeedRecords}" 
+                                    HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="FillAndExpand">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal" Padding="10">
+                                    <Label Text="{Binding Timestamp, StringFormat='{0:HH:mm:ss}'}" />
+                                    <Label Text="{Binding Speed, StringFormat='{0} km/h'}" />
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+            </StackLayout>
+        </Frame>
+
+        <!-- Back to Main Button -->
         <Button Text="Back to main"
                 BackgroundColor="LimeGreen"
                 TextColor="White"
