@@ -8,11 +8,12 @@ namespace Project1.Services
 {
     public class SpeedLimitServices
     {
-        private const string apiKey = "fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ"; // Replace with your actual API key
+        private const string apiKey = "VrjJPxekgdcQ5QK0YXk2PipVaMYGd_qkyeAhLQUe35I"; // Replace with your actual API key
 
         public async Task<int?> GetSpeedLimitAsync(double latitude, double longitude)
         {
-            string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4,SPEED_LIMITS_FC2,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4,SPEED_LIMITS_FC4&in=tile:24267002,1516094,24275195,24275196,24283388,24283387&apiKey=fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ";
+            // URL remains unchanged
+            string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4&in=tile:24275195&apiKey=VrjJPxekgdcQ5QK0YXk2PipVaMYGd_qkyeAhLQUe35I";
 
             using (HttpClient client = new HttpClient())
             {
@@ -24,10 +25,16 @@ namespace Project1.Services
                         string jsonResponse = await response.Content.ReadAsStringAsync();
                         var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
 
+                        // Log the full response to troubleshoot
+                        Console.WriteLine("Full JSON Response: " + jsonResponse);
+
+                        // Implement more detailed logging for each row
                         foreach (var tile in speedData.Tiles)
                         {
                             foreach (var row in tile.Rows)
                             {
+                                Console.WriteLine($"LINK_ID: {row.LINK_ID}, FROM_REF_SPEED_LIMIT: {row.FROM_REF_SPEED_LIMIT}, TO_REF_SPEED_LIMIT: {row.TO_REF_SPEED_LIMIT}");
+                                
                                 if (!string.IsNullOrEmpty(row.FROM_REF_SPEED_LIMIT))
                                 {
                                     return int.Parse(row.FROM_REF_SPEED_LIMIT);
@@ -68,6 +75,7 @@ namespace Project1.Services
 
         private class Row
         {
+            public string LINK_ID { get; set; }
             public string FROM_REF_SPEED_LIMIT { get; set; }
             public string TO_REF_SPEED_LIMIT { get; set; }
         }

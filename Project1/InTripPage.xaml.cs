@@ -2,24 +2,26 @@ using Project1.Services;
 using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
-using Project1;
-using SkiaSharp.Views.Maui.Controls;
 using Project1.Models;
+using Project1;
 
 namespace InTrip
 {
     public partial class InTripPage : ContentPage
     {
-        private readonly LocationServices _locationServices = new LocationServices();
-        private readonly SpeedLimitServices _speedLimitServices = new SpeedLimitServices();
+        private readonly LocationServices _locationServices;
+        private readonly SpeedLimitServices _speedLimitServices;
+        private Driver _driver;
         private Trip currentTrip;
-        private Driver _driver; // Add this field to store the driver information
 
-        public InTripPage(Driver driver) // Modify the constructor to take the Driver object
+        public InTripPage(Driver driver)
         {
             InitializeComponent();
+            _locationServices = new LocationServices();
+            _speedLimitServices = new SpeedLimitServices();
             currentTrip = new Trip();
-            _driver = driver; // Store the driver information
+            _driver = driver;
+
             StartListeningForLocationUpdates();
         }
 
@@ -36,6 +38,7 @@ namespace InTrip
 
                 try
                 {
+                    // Call to GetSpeedLimitAsync method
                     var speedLimit = await _speedLimitServices.GetSpeedLimitAsync(deviceLocation.Latitude, deviceLocation.Longitude);
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
@@ -61,11 +64,10 @@ namespace InTrip
             try
             {
                 _locationServices.StopListening();
-                currentTrip.EndTrip(); // Record the end time of the trip
-                currentTrip.CalculateScore(); // Calculate the trip score
-                await DisplayAlert("Trip ended", "Location updates stopped.", "Ok");
+                currentTrip.EndTrip();
+                currentTrip.CalculateScore();
+                await DisplayAlert("Trip ended", "Location updates stopped.", "OK");
 
-                // Navigate to TripSummaryPage and pass the trip data along with the driver information
                 await Navigation.PushAsync(new TripSummaryPage(currentTrip.Duration, currentTrip.Score, currentTrip.ExceedingSpeedRecords, _driver));
             }
             catch (Exception ex)

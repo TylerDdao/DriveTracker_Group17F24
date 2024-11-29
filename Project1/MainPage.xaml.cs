@@ -70,7 +70,6 @@ namespace Project1
         // Method to fetch the driver instance from the database
         private async Task FetchDriverInfo()
         {
-            // Assume accountInstance is set somewhere in the application
             if (driverInstance != null)
             {
                 driverInstance = await _azureSQLAccess.GetDriverByEmailAsync(driverInstance.GetAccountEmail());
@@ -212,13 +211,11 @@ namespace Project1
 
         private async void OnButtonHomeClicked(object sender, EventArgs e)
         {
-            // Prompt user to show that they are already on the page.
             await DisplayAlert("Attention", "Currently on the Home Page.", "OK");
         }
 
         private async void OnButtonTripClicked(object sender, EventArgs e)
         {
-            // Navigate to InTripPage with the driver instance
             await Navigation.PushAsync(new TripHistoryPage(driverInstance.GetAccountEmail()));
         }
 
