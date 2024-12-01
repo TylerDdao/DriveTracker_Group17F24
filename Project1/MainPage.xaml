@@ -14,7 +14,7 @@
                    VerticalOptions="Center"/>
         </HorizontalStackLayout>
 
-        <Border Stroke="LimeGreen"
+        <Border Stroke="#007BFF"   
                 StrokeThickness="4"
                 StrokeShape="RoundRectangle 10,10,10,10"
                 Margin="0,10,0,0"
@@ -26,20 +26,21 @@
         </Border>
 
         <Button Text="Start Trip"
-                BackgroundColor="LimeGreen"
+                BackgroundColor="MediumSeaGreen"     
                 TextColor="White"
                 Margin="0,10,0,0"
                 HeightRequest="70"
-                WidthRequest="300"
-                FontSize="30"
+                WidthRequest="185"
+                FontSize="35"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Clicked="OnButtonClicked" 
+                CornerRadius="25"/>
 
         <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="10,0,0,10" Spacing="10">
             <Button Text="Home"
-                    BackgroundColor="LimeGreen"
-                    TextColor="White"
+                    BackgroundColor="#007BFF"
+                    TextColor="White" 
                     Margin="0,10,0,0"
                     FontSize="15"
                     HorizontalOptions="Center"
@@ -47,7 +48,7 @@
                     Clicked="OnButtonClicked" />
 
             <Button Text="Trip history"
-                    BackgroundColor="LimeGreen"
+                    BackgroundColor="#007BFF"
                     TextColor="White"
                     Margin="0,10,0,0"
                     FontSize="15"
@@ -56,7 +57,7 @@
                     Clicked="OnButtonClicked" />
 
             <Button Text="Settings"
-                    BackgroundColor="LimeGreen"
+                    BackgroundColor="#007BFF"
                     TextColor="White"
                     Margin="0,10,0,0"
                     FontSize="15"

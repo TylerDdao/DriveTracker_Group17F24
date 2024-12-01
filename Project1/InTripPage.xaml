@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InTrip.InTripPage">
-
-    <StackLayout Padding="10" Spacing="20">
+             x:Class="Project1.InTripPage"
+             Title = "On Trip">
+    
+    <VerticalStackLayout>
+    <StackLayout Padding="10" Spacing="20" BackgroundColor="Azure">
 
         <!-- Display Latitude -->
         <Label Text="Latitude:" FontSize="20" />
-        <Label x:Name="LatitudeText" FontSize="20" BackgroundColor="LimeGreen"/>
+        <Label x:Name="LatitudeText" FontSize="20" BackgroundColor="AliceBlue"/>
 
         <!-- Display Longitude -->
         <Label Text="Longitude:" FontSize="20" />
-        <Label x:Name="LongitudeText" FontSize="20" BackgroundColor="LimeGreen"/>
+        <Label x:Name="LongitudeText" FontSize="20" BackgroundColor="AliceBlue"/>
 
         <!-- Display Current Speed -->
         <Label Text="Current Speed:" FontSize="20" />
-        <Label x:Name="CurrentSpeedLabel" FontSize="20" BackgroundColor="LimeGreen"/>
+        <Label x:Name="CurrentSpeedLabel" FontSize="20" BackgroundColor="AliceBlue"/>
 
         <!-- Display Speed Limit -->
         <Label Text="Speed Limit:" FontSize="20" />
-        <Label x:Name="SpeedLimitLabel" FontSize="20" BackgroundColor="LimeGreen"/>
+        <Label x:Name="SpeedLimitLabel" FontSize="20" BackgroundColor="AliceBlue"/>
 
         <!-- End Trip Button -->
-        <Button Text="End Trip" Clicked="OnEndTripButtonClicked" BackgroundColor="LimeGreen" HeightRequest="70" WidthRequest="150"/>
-
+        <Button Text="End Trip" CornerRadius="25" Clicked="OnEndTripButtonClicked" BackgroundColor="Crimson" HeightRequest="70" WidthRequest="150" FontSize = "Large" />
+        
     </StackLayout>
+        <VerticalStackLayout>
+            <Label Text="" HeightRequest="225"/>
+        </VerticalStackLayout>
+        <HorizontalStackLayout  Spacing="24" HorizontalOptions="Center" VerticalOptions="EndAndExpand">
+            
+            <Button
+                Text="Home"
+                Background="#007BFF"
+                Clicked="OnHomeButtonClicked"/>
+               
+            <Button
+            Text="Trip summary"
+            Background="#007BFF"                         />
+            <Button
+                Text="Setting"
+                Background="#007BFF" />
+        </HorizontalStackLayout>
+       
+</VerticalStackLayout>
 </ContentPage>

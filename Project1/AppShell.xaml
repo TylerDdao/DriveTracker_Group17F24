@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Project1"
     Shell.FlyoutBehavior="Disabled"
-    Shell.TitleColor="red"
+    Shell.TitleColor="Black"
     Title="Project1">
 
     <ShellContent 
@@ -27,5 +27,11 @@
         Title="Trip Summary" 
         ContentTemplate="{DataTemplate local:TripSummaryPage}" 
         Route="TripSummaryPage"/>
+    <ShellContent
+        Title="On Trip"
+         ContentTemplate="{DataTemplate local:InTripPage}" 
+        Route="InTripPage"/>
+    
+    
 
 </Shell>
