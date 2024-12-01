@@ -1,7 +1,5 @@
-﻿using Project1.Models;
-using System;
+﻿using System;
 using System.Threading.Tasks;
-
 
 namespace Project1.Services
 {
@@ -40,7 +38,11 @@ namespace Project1.Services
 
         private void OnLocationChanged(object sender, GeolocationLocationChangedEventArgs e)
         {
-            var deviceLocation = new DeviceLocation(e.Location.Latitude, e.Location.Longitude, e.Location.Speed ?? 0.0);
+            // Convert speed from meters per second (m/s) to kilometers per hour (km/h)
+            var speedInKmh = (e.Location.Speed ?? 0.0) * 3.6; // Conversion factor: 1 m/s = 3.6 km/h
+            Console.WriteLine($"Location changed: Latitude={e.Location.Latitude}, Longitude={e.Location.Longitude}, Speed={speedInKmh} km/h");
+
+            var deviceLocation = new DeviceLocation(e.Location.Latitude, e.Location.Longitude, speedInKmh);
             LocationChanged?.Invoke(this, deviceLocation);
         }
 

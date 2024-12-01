@@ -10,57 +10,53 @@ namespace Project1.Services
     {
         private const string apiKey = "VrjJPxekgdcQ5QK0YXk2PipVaMYGd_qkyeAhLQUe35I"; // Replace with your actual API key
 
-        public async Task<int?> GetSpeedLimitAsync(double latitude, double longitude)
+        public async Task<int?> GetSpeedLimitAsync()
         {
-            // URL remains unchanged
-            string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4&in=tile:24275195&apiKey=VrjJPxekgdcQ5QK0YXk2PipVaMYGd_qkyeAhLQUe35I";
+            var tileIds = new List<string> { "24283388"}; // Add more as needed
+            int? speedLimit = null;
 
-            using (HttpClient client = new HttpClient())
+            foreach (var tileId in tileIds)
             {
-                try
+                string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4&in=tile:{tileId}&apiKey={apiKey}";
+
+                using (HttpClient client = new HttpClient())
                 {
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    if (response.IsSuccessStatusCode)
+                    try
                     {
-                        string jsonResponse = await response.Content.ReadAsStringAsync();
-                        var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
-
-                        // Log the full response to troubleshoot
-                        Console.WriteLine("Full JSON Response: " + jsonResponse);
-
-                        // Implement more detailed logging for each row
-                        foreach (var tile in speedData.Tiles)
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        if (response.IsSuccessStatusCode)
                         {
-                            foreach (var row in tile.Rows)
+                            string jsonResponse = await response.Content.ReadAsStringAsync();
+                            var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
+
+                            foreach (var tile in speedData.Tiles)
                             {
-                                Console.WriteLine($"LINK_ID: {row.LINK_ID}, FROM_REF_SPEED_LIMIT: {row.FROM_REF_SPEED_LIMIT}, TO_REF_SPEED_LIMIT: {row.TO_REF_SPEED_LIMIT}");
-                                
-                                if (!string.IsNullOrEmpty(row.FROM_REF_SPEED_LIMIT))
+                                foreach (var row in tile.Rows)
                                 {
-                                    return int.Parse(row.FROM_REF_SPEED_LIMIT);
-                                }
-                                if (!string.IsNullOrEmpty(row.TO_REF_SPEED_LIMIT))
-                                {
-                                    return int.Parse(row.TO_REF_SPEED_LIMIT);
+                                    if (!string.IsNullOrEmpty(row.FROM_REF_SPEED_LIMIT))
+                                    {
+                                        speedLimit = int.Parse(row.FROM_REF_SPEED_LIMIT);
+                                    }
+                                    if (!string.IsNullOrEmpty(row.TO_REF_SPEED_LIMIT))
+                                    {
+                                        speedLimit = int.Parse(row.TO_REF_SPEED_LIMIT);
+                                    }
                                 }
                             }
                         }
-
-                        return null; // No speed limit found
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        string errorResponse = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Error: {response.StatusCode}, {errorResponse}");
-                        return null;
+                        Console.WriteLine($"Exception: {ex.Message}");
                     }
                 }
-                catch (Exception ex)
+
+                if (speedLimit.HasValue)
                 {
-                    Console.WriteLine($"Exception: {ex.Message}");
-                    return null;
+                    break;
                 }
             }
+            return speedLimit;
         }
 
         private class SpeedLimitResponse
@@ -75,7 +71,6 @@ namespace Project1.Services
 
         private class Row
         {
-            public string LINK_ID { get; set; }
             public string FROM_REF_SPEED_LIMIT { get; set; }
             public string TO_REF_SPEED_LIMIT { get; set; }
         }

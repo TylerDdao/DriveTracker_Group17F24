@@ -113,12 +113,12 @@ namespace Project1
             }
 
             // Validate Postal Code (Canadian Format)
-            if (string.IsNullOrWhiteSpace(postalCode) || !Regex.IsMatch(postalCode, @"^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$"))
-            {
-                PostalCodeErrorLabel.Text = string.IsNullOrWhiteSpace(postalCode) ? "Postal Code is required." : "Invalid postal code format.";
-                PostalCodeErrorLabel.IsVisible = true;
-                isValid = false;
-            }
+            //if (string.IsNullOrWhiteSpace(postalCode) || !Regex.IsMatch(postalCode, @"^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$"))
+            //{
+            //    PostalCodeErrorLabel.Text = string.IsNullOrWhiteSpace(postalCode) ? "Postal Code is required." : "Invalid postal code format.";
+            //    PostalCodeErrorLabel.IsVisible = true;
+            //    isValid = false;
+            //}
 
             // Validate License Number
             if (string.IsNullOrWhiteSpace(licenseNumber))

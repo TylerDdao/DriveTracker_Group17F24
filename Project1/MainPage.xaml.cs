@@ -14,7 +14,6 @@ namespace Project1
         private readonly LocationServices _locationServices;
         private readonly AzureSQLAccess _azureSQLAccess;
         private IDispatcherTimer _timer;
-
         private Driver driverInstance;
 
         // Constructor that accepts email parameter
@@ -24,10 +23,8 @@ namespace Project1
             _locationServices = new LocationServices();
             _azureSQLAccess = new AzureSQLAccess();
             BindingContext = this;
-
             LoadGoogleMap();
             StartUpdatingLocation();
-
             SetDriverInstanceByEmail(email); // Fetch and set the driver instance by email
         }
 
@@ -37,7 +34,6 @@ namespace Project1
             _locationServices = new LocationServices();
             _azureSQLAccess = new AzureSQLAccess();
             BindingContext = this;
-
             LoadGoogleMap();
             StartUpdatingLocation();
         }

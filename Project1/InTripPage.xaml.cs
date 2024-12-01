@@ -1,9 +1,9 @@
-using Project1.Services;
-using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
-using Project1.Models;
+using Microsoft.Maui.Controls;
 using Project1;
+using Project1.Models;
+using Project1.Services;
 
 namespace InTrip
 {
@@ -23,6 +23,7 @@ namespace InTrip
             _driver = driver;
 
             StartListeningForLocationUpdates();
+            RefreshSpeedLimitAsync();
         }
 
         private void StartListeningForLocationUpdates()
@@ -33,30 +34,26 @@ namespace InTrip
                 {
                     LatitudeText.Text = $"{deviceLocation.Latitude}";
                     LongitudeText.Text = $"{deviceLocation.Longitude}";
-                    CurrentSpeedLabel.Text = $"{deviceLocation.Speed} km/h";
+                    double speedInKmh = deviceLocation.Speed; // Convert speed to km/h * 3.6
+                    CurrentSpeedLabel.Text = $"{speedInKmh} km/h";
                 });
-
-                try
-                {
-                    // Call to GetSpeedLimitAsync method
-                    var speedLimit = await _speedLimitServices.GetSpeedLimitAsync(deviceLocation.Latitude, deviceLocation.Longitude);
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        SpeedLimitLabel.Text = speedLimit.HasValue ? $"{speedLimit.Value} km/h" : "No speed limit data available";
-                    });
-
-                    if (speedLimit.HasValue)
-                    {
-                        currentTrip.AddSpeedRecordIfExceedsLimit(deviceLocation.Speed, speedLimit.Value);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error fetching speed limit: {ex.Message}");
-                }
             };
 
             _locationServices.StartListening();
+        }
+
+        private async Task RefreshSpeedLimitAsync()
+        {
+            while (true)
+            {
+                await Task.Delay(5000); // 5 seconds delay
+                var speedLimit = await _speedLimitServices.GetSpeedLimitAsync();
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    SpeedLimitLabel.Text = speedLimit.HasValue ? $"{speedLimit.Value} km/h" : "No speed limit data available";
+                });
+            }
         }
 
         private async void OnEndTripButtonClicked(object sender, EventArgs e)
@@ -76,5 +73,21 @@ namespace InTrip
                 await DisplayAlert("Error", "An error occurred while ending the trip.", "OK");
             }
         }
+    }
+
+    public class SpeedLimitResponse
+    {
+        public List<Tile> Tiles { get; set; }
+    }
+
+    public class Tile
+    {
+        public List<Row> Rows { get; set; }
+    }
+
+    public class Row
+    {
+        public string FROM_REF_SPEED_LIMIT { get; set; }
+        public string TO_REF_SPEED_LIMIT { get; set; }
     }
 }

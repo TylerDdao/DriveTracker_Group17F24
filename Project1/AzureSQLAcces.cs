@@ -131,14 +131,13 @@ namespace Project1.Data
             {
                 await conn.OpenAsync();
                 string query = @"
-                    UPDATE Drivers
-                    SET FirstName = @FirstName,
-                        LastName = @LastName,
-                        Address = @Address,
-                        PostalCode = @PostalCode,
-                        LicenseNumber = @LicenseNumber,
-                        Password = @Password -- Ensure this is hashed properly
-                    WHERE Email = @Email";
+            UPDATE Drivers
+            SET FirstName = @FirstName,
+                LastName = @LastName,
+                Address = @Address,
+                PostalCode = @PostalCode,
+                LicenseNumber = @LicenseNumber
+            WHERE Email = @Email";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -147,12 +146,12 @@ namespace Project1.Data
                 cmd.Parameters.AddWithValue("@Address", driver.GetAddress());
                 cmd.Parameters.AddWithValue("@PostalCode", driver.GetPostalCode());
                 cmd.Parameters.AddWithValue("@LicenseNumber", driver.GetDriverLicenseNumber());
-                cmd.Parameters.AddWithValue("@Password", account.GetPassword());
                 cmd.Parameters.AddWithValue("@Email", driver.GetAccountEmail());
 
                 await cmd.ExecuteNonQueryAsync();
             }
         }
+
 
         // Update driver overall score
         public async Task UpdateDriverOverallScoreAsync(string email, int newOverallScore)
