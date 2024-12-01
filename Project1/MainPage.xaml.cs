@@ -223,5 +223,9 @@ namespace Project1
         {
             await Navigation.PushAsync(new SettingsPage(driverInstance.GetAccountEmail()));
         }
+        private async void OnInstructionButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new InstructionPage());
+        }
     }
 }

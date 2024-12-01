@@ -16,6 +16,15 @@ HorizontalOptions="Center" TextColor="LimeGreen"/>
                    FontSize="20" 
                    Margin="0,0,0,0"
                    VerticalOptions="Center"/>
+
+            <Button Text="?"
+                    BackgroundColor="LimeGreen"
+                    TextColor="White"
+                    Margin="0,0,0,0"
+                    FontSize="22"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Clicked="OnInstructionButtonClicked"/>
         </HorizontalStackLayout>
 
         <Border Stroke="LimeGreen"
