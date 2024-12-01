@@ -3,19 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project1.InstructionPage"
              BackgroundColor="White">
-    <VerticalStackLayout Padding="10">
-        <Label 
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <Label 
             Text="Instruction for DriverTracker"
             FontSize="24"
             FontAttributes="Bold"
             HorizontalOptions="Center"
             TextColor="LimeGreen"
             Margin = "10"/>
-        <!-- ScrollView for instruction text -->
-        <!-- Scrollable area for the instruction text -->
-        <ScrollView>
-            <VerticalStackLayout Padding="10">
-                <Label Text="DriveTracker is an application which collects the data about your location and speed while you are driving and evaluates your trip at the end. This instruction is designed for users that want to know about the features of DriveTracker and how to use them. &#10;&#10;
+            <Label Text="DriveTracker is an application which collects the data about your location and speed while you are driving and evaluates your trip at the end. This instruction is designed for users that want to know about the features of DriveTracker and how to use them. &#10;&#10;
                              Main features &#10;&#10;1) STARTING TRIP: While you are on the Home page with the Map that shows you your current location, you can press BIG “Start trip” button on your screen to begin your trip. Beginning of the trip will start the process of collecting and analyzing your speed and location data and you will be taken to the Trip page where you will be able to see your current speed, speed limit on the road that you are taking, and data about your current location.
 &#10;2) ENDING TRIP (You need to be on Trip Page to use this): Every trip comes to an end, so when you have finished your trip, just click big “End Trip” button at the bottom of your screen. This action will tell the program to stop collecting data and finish the trip. Also, the button will navigate you to the “Trip Summary” page.
 &#10;3) TRIP SUMMARY (Appears when you ended your trip): After you have clicked “End Trip” button on the Trip Page you will be taken to Trip Summary, where you can view information about the Trip you did like Duration of the trip, Score for the trip, and Speeding violations that were caught by DriveTracker during the trip. On this page you also will see a big button “Back to Home” which will take you to the Home page.
@@ -26,7 +23,6 @@
 &#10;&#10;Have a nice time using DriveTracker!!!
 &#10;Be safe on roads!!!"
                     LineBreakMode="WordWrap" />
-            </VerticalStackLayout>
-        </ScrollView>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
