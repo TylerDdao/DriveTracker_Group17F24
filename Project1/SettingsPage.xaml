@@ -15,6 +15,7 @@
                        FontSize="Large" 
                        Padding="10,20"/>
                 <!-- First Name Field -->
+                <Label Text="First Name:" FontSize="Medium" />
                 <Entry x:Name="FirstNameEntry"
                        Placeholder="Enter your first name"
                        ReturnType="Next"
@@ -23,6 +24,7 @@
                        BackgroundColor="White"/>
                 <Label x:Name="FirstNameErrorLabel" Text="First name is required." TextColor="Red" IsVisible="False"/>
                 <!-- Last Name Field -->
+                <Label Text="Last Name:" FontSize="Medium" />
                 <Entry x:Name="LastNameEntry"
                        Placeholder="Enter your last name"
                        ReturnType="Next"
@@ -31,6 +33,7 @@
                        BackgroundColor="White"/>
                 <Label x:Name="LastNameErrorLabel" Text="Last name is required." TextColor="Red" IsVisible="False"/>
                 <!-- Email Field -->
+                <Label Text="Email:" FontSize="Medium" />
                 <Entry x:Name="EmailEntry"
                        Text="View-only text"
                        WidthRequest="250"
@@ -38,6 +41,7 @@
                        BackgroundColor="Grey"/>
                 <Label x:Name="EmailErrorLabel" Text="Email is required." TextColor="Red" IsVisible="False"/>
                 <!-- Address Field -->
+                <Label Text="Address:" FontSize="Medium" />
                 <Entry x:Name="AddressEntry"
                        Placeholder="Enter your address"
                        ReturnType="Next"
@@ -46,6 +50,7 @@
                        BackgroundColor="White"/>
                 <Label x:Name="AddressErrorLabel" Text="Address is required." TextColor="Red" IsVisible="False"/>
                 <!-- Postal Code Field -->
+                <Label Text="Postal Code:" FontSize="Medium" />
                 <Entry x:Name="PostalCodeEntry"
                        Placeholder="Enter your postal code"
                        Keyboard="Text"
@@ -55,6 +60,7 @@
                        BackgroundColor="White"/>
                 <Label x:Name="PostalCodeErrorLabel" Text="Postal code is required." TextColor="Red" IsVisible="False"/>
                 <!-- Driver License Number Field -->
+                <Label Text="Driver License:" FontSize="Medium" />
                 <Entry x:Name="LicenseNumberEntry"
                        Placeholder="Enter your driver license number"
                        ReturnType="Next"

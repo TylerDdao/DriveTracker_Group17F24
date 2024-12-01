@@ -18,10 +18,15 @@ HorizontalOptions="Center" TextColor="LimeGreen"/>
                    VerticalOptions="Center"/>
 
             <Button Text="?"
-                    BackgroundColor="LimeGreen"
-                    TextColor="White"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    BackgroundColor="White"
+                    BorderWidth="3"
+                    BorderColor="LimeGreen"
+                    CornerRadius="100"
+                    TextColor="Black"
                     Margin="0,0,0,0"
-                    FontSize="22"
+                    FontSize="24"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     Clicked="OnInstructionButtonClicked"/>

@@ -7,7 +7,11 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.TitleColor="red"
     Title="Project1">
-
+    <ShellContent 
+    Title="Welcome" 
+    ContentTemplate="{DataTemplate local:WelcomePage}" 
+    Route="WelcomePage"/>
+    
     <ShellContent 
         Title="Login" 
         ContentTemplate="{DataTemplate local:LoginPage}" 
