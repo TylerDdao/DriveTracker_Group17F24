@@ -76,7 +76,7 @@ namespace Project1
 
                     await DisplayAlert("Success", "Logged in successfully!", "OK");
                     // Navigate to the MainPage
-                    await Navigation.PushAsync(mainPage);
+                    await Navigation.PushAsync(new WelcomePage());
                 }
             }
             else
