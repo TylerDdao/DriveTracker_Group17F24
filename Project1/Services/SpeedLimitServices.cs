@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,70 +8,107 @@ namespace Project1.Services
     public class SpeedLimitServices
     {
         private const string apiKey = "VrjJPxekgdcQ5QK0YXk2PipVaMYGd_qkyeAhLQUe35I"; // Replace with your actual API key
+        private DeviceLocation _currentLocation;
+
+        public void SetCurrentLocation(DeviceLocation location)
+        {
+            _currentLocation = location;
+        }
 
         public async Task<int?> GetSpeedLimitAsync()
         {
-            var tileIds = new List<string> { "24283388"}; // Add more as needed
+            if (_currentLocation == null)
+            {
+                Console.WriteLine("Current location is not set.");
+                return null;
+            }
+
             int? speedLimit = null;
 
-            foreach (var tileId in tileIds)
+            string url = $"https://routematching.hereapi.com/v8/match/routelinks?apikey={apiKey}&waypoint0={_currentLocation.Latitude},{_currentLocation.Longitude}&waypoint1={_currentLocation.Latitude},{_currentLocation.Longitude}&mode=fastest;car&routeMatch=1&attributes=SPEED_LIMITS_FCN(*)";
+
+            using (HttpClient client = new HttpClient())
             {
-                string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4&in=tile:{tileId}&apiKey={apiKey}";
-
-                using (HttpClient client = new HttpClient())
+                try
                 {
-                    try
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
                     {
-                        HttpResponseMessage response = await client.GetAsync(url);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string jsonResponse = await response.Content.ReadAsStringAsync();
-                            var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
+                        string jsonResponse = await response.Content.ReadAsStringAsync();
+                        var routeResponse = JsonSerializer.Deserialize<RouteResponse>(jsonResponse);
 
-                            foreach (var tile in speedData.Tiles)
+                        if (routeResponse?.response?.route != null && routeResponse.response.route.Count > 0)
+                        {
+                            var route = routeResponse.response.route[0];
+
+                            foreach (var leg in route.leg)
                             {
-                                foreach (var row in tile.Rows)
+                                foreach (var link in leg.link)
                                 {
-                                    if (!string.IsNullOrEmpty(row.FROM_REF_SPEED_LIMIT))
+                                    if (link.attributes != null && link.attributes.SPEED_LIMITS_FCN != null)
                                     {
-                                        speedLimit = int.Parse(row.FROM_REF_SPEED_LIMIT);
+                                        var speedLimitInfo = link.attributes.SPEED_LIMITS_FCN[0];
+                                        if (!string.IsNullOrEmpty(speedLimitInfo.FROM_REF_SPEED_LIMIT))
+                                        {
+                                            speedLimit = int.Parse(speedLimitInfo.FROM_REF_SPEED_LIMIT);
+                                            break;
+                                        }
                                     }
-                                    if (!string.IsNullOrEmpty(row.TO_REF_SPEED_LIMIT))
+                                    if (speedLimit.HasValue)
                                     {
-                                        speedLimit = int.Parse(row.TO_REF_SPEED_LIMIT);
+                                        break;
                                     }
+                                }
+                                if (speedLimit.HasValue)
+                                {
+                                    break;
                                 }
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Exception: {ex.Message}");
-                    }
                 }
-
-                if (speedLimit.HasValue)
+                catch (Exception ex)
                 {
-                    break;
+                    Console.WriteLine($"Exception: {ex.Message}");
                 }
             }
+
             return speedLimit;
         }
 
-        private class SpeedLimitResponse
+        private class RouteResponse
         {
-            public List<Tile> Tiles { get; set; }
+            public Response response { get; set; }
         }
 
-        private class Tile
+        private class Response
         {
-            public List<Row> Rows { get; set; }
+            public List<Route> route { get; set; }
         }
 
-        private class Row
+        private class Route
+        {
+            public List<Leg> leg { get; set; }
+        }
+
+        private class Leg
+        {
+            public List<Link> link { get; set; }
+        }
+
+        private class Link
+        {
+            public Attributes attributes { get; set; }
+        }
+
+        private class Attributes
+        {
+            public List<SpeedLimitInfo> SPEED_LIMITS_FCN { get; set; }
+        }
+
+        private class SpeedLimitInfo
         {
             public string FROM_REF_SPEED_LIMIT { get; set; }
-            public string TO_REF_SPEED_LIMIT { get; set; }
         }
     }
 }
