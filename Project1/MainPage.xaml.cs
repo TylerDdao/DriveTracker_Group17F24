@@ -29,7 +29,7 @@ namespace Project1
             _azureSQLAccess = new AzureSQLAccess();
             BindingContext = this;
             LoadGoogleMap();
-            StartUpdatingLocation();
+            
             SetDriverInstanceByEmail(email); // Fetch and set the driver instance by email
         }
 
@@ -40,7 +40,7 @@ namespace Project1
             _azureSQLAccess = new AzureSQLAccess();
             BindingContext = this;
             LoadGoogleMap();
-            StartUpdatingLocation();
+            
         }
 
 
@@ -148,7 +148,7 @@ namespace Project1
             }
         }
 
-        private void StartUpdatingLocation()
+        //private void StartUpdatingLocation();
 
         public async Task<string> GetTrafficHtmlAsync()
         {
@@ -210,14 +210,7 @@ namespace Project1
     ";
             return traffic;
         }
-        //Map
-        private async void LoadGoogleMap()
-        {
-            GoogleMapWebView.Source = new HtmlWebViewSource
-            {
-                Html = await GetTrafficHtmlAsync()
-            };
-        }
+       
 
 
 

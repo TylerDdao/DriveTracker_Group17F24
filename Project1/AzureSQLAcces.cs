@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
-
+using Project1.Models;
 namespace Project1.Data
 {
     public class AzureSQLAccess
