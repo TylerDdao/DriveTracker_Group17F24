@@ -7,7 +7,7 @@ namespace Project1.Services
 {
     public class SpeedLimitServices
     {
-        private const string apiKey = "VrjJPxekgdcQ5QK0YXk2PipVaMYGd_qkyeAhLQUe35I"; // Replace with your actual API key
+        private const string apiKey = "fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ"; // Replace with your actual API key
         private DeviceLocation _currentLocation;
 
         public void SetCurrentLocation(DeviceLocation location)

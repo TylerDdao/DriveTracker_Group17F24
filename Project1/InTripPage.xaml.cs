@@ -25,27 +25,32 @@ namespace InTrip
             StartListeningForLocationUpdates();
             RefreshSpeedLimitAsync();
         }
-
+        //Every time the location is updated it adds a record if voilation is made.
         private void StartListeningForLocationUpdates()
         {
             _locationServices.LocationChanged += async (sender, deviceLocation) =>
             {
                 _speedLimitServices.SetCurrentLocation(deviceLocation);
-                var speedLimit = await _speedLimitServices.GetSpeedLimitAsync();
-
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     LatitudeText.Text = $"{deviceLocation.Latitude}";
                     LongitudeText.Text = $"{deviceLocation.Longitude}";
                     double speedInKmh = deviceLocation.Speed;
                     CurrentSpeedLabel.Text = $"{speedInKmh} km/h";
-                    SpeedLimitLabel.Text = $"{speedLimit} km/h"; // Always show speed limit
                 });
 
-                if (speedLimit != null)
+                var speedLimit = await _speedLimitServices.GetSpeedLimitAsync();
+                
+                
+
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    currentTrip.AddSpeedRecordIfExceedsLimit(deviceLocation.Speed, speedLimit.Value);
-                }
+                    if (speedLimit != null)
+                    {
+                        currentTrip.AddSpeedRecordIfExceedsLimit(deviceLocation.Speed, speedLimit.Value);
+                    }
+                    SpeedLimitLabel.Text = $"{speedLimit} km/h"; // Always show speed limit
+                });
             };
 
             _locationServices.StartListening();
