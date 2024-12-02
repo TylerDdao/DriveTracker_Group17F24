@@ -1,53 +1,93 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+using Project1;
+using Project1.Models;
 using Project1.Services;
+
 namespace InTrip
 {
     public partial class InTripPage : ContentPage
     {
+        private readonly LocationServices _locationServices;
+        private readonly SpeedLimitServices _speedLimitServices;
+        private Driver _driver;
+        private Trip currentTrip;
 
-        private readonly LocationServices _locationServices = new LocationServices();
-        private readonly SpeedLimitServices speedLimitServices = new SpeedLimitServices();
-        public InTripPage()
+        public InTripPage(Driver driver)
         {
             InitializeComponent();
-            StartListeningForLocationUpdates();
+            _locationServices = new LocationServices();
+            _speedLimitServices = new SpeedLimitServices();
+            currentTrip = new Trip();
+            _driver = driver;
 
+            StartListeningForLocationUpdates();
+            RefreshSpeedLimitAsync();
         }
-        private async void StartListeningForLocationUpdates()
+
+        private void StartListeningForLocationUpdates()
         {
-            _locationServices.LocationChanged += (sender, deviceLocation) =>
+            _locationServices.LocationChanged += async (sender, deviceLocation) =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    LatitudeText.Text = $"{deviceLocation.latitude}";
-                    LongitudeText.Text = $"{deviceLocation.longitude}";
-                });
-                // Update the UI with the current speed
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    CurrentSpeedLabel.Text = $"{deviceLocation.speed} km/h";
-                });
-
-                // Get the speed limit and update the UI
-                var speedLimit = speedLimitServices.GetSpeedLimitAsync(deviceLocation.latitude, deviceLocation.longitude);
-                speedLimit.ContinueWith(task =>
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        SpeedLimitLabel.Text = task.Result + " km/h";
-                    });
+                    LatitudeText.Text = $"{deviceLocation.Latitude}";
+                    LongitudeText.Text = $"{deviceLocation.Longitude}";
+                    double speedInKmh = deviceLocation.Speed; // Convert speed to km/h * 3.6
+                    CurrentSpeedLabel.Text = $"{speedInKmh} km/h";
                 });
             };
 
-                _locationServices.OnStartListening();
-
+            _locationServices.StartListening();
         }
 
+        private async Task RefreshSpeedLimitAsync()
+        {
+            while (true)
+            {
+                await Task.Delay(5000); // 5 seconds delay
+                var speedLimit = await _speedLimitServices.GetSpeedLimitAsync();
 
-       
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    SpeedLimitLabel.Text = speedLimit.HasValue ? $"{speedLimit.Value} km/h" : "No speed limit data available";
+                });
+            }
+        }
+
         private async void OnEndTripButtonClicked(object sender, EventArgs e)
         {
-            _locationServices.OnStopListening();
-            await DisplayAlert("Trip ended", "Location stoped", "Ok");
+            try
+            {
+                _locationServices.StopListening();
+                currentTrip.EndTrip();
+                currentTrip.CalculateScore();
+                await DisplayAlert("Trip ended", "Location updates stopped.", "OK");
+
+                await Navigation.PushAsync(new TripSummaryPage(currentTrip.Duration, currentTrip.Score, currentTrip.ExceedingSpeedRecords, _driver));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during navigation: {ex.Message}");
+                await DisplayAlert("Error", "An error occurred while ending the trip.", "OK");
+            }
         }
+    }
+
+    public class SpeedLimitResponse
+    {
+        public List<Tile> Tiles { get; set; }
+    }
+
+    public class Tile
+    {
+        public List<Row> Rows { get; set; }
+    }
+
+    public class Row
+    {
+        public string FROM_REF_SPEED_LIMIT { get; set; }
+        public string TO_REF_SPEED_LIMIT { get; set; }
     }
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project1.TripSummaryPage"
+             Title="">
+
+    <VerticalStackLayout Padding="1" Spacing="40" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+
+        <Label 
+            Text="Trip Summary"
+            FontSize="24"
+            FontAttributes="Bold"
+            HorizontalOptions="Center" 
+            TextColor="LimeGreen"/>
+
+        <!-- Frame to provide lime green outline box with fixed dimensions -->
+        <Frame BorderColor="Lime" 
+               HasShadow="False" 
+               CornerRadius="5" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" 
+               Padding="25"
+               WidthRequest="350" 
+               HeightRequest="400">
+
+            <!-- StackLayout to display trip summary details -->
+            <StackLayout Spacing="20">
+
+                <!-- Display Trip Duration -->
+                <Label Text="{Binding TripDuration}" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       Margin="10,0,0,0" 
+                       BackgroundColor="LimeGreen"/>
+
+                <!-- Display Trip Score -->
+                <Label Text="{Binding TripScore}" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       Margin="10,0,0,0" 
+                       BackgroundColor="LimeGreen"/>
+
+                <!-- Display Exceeding Speed Violations Header -->
+                <Label Text="Exceeding Speed Violations:" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       Margin="10,0,0,0" 
+                       BackgroundColor="LimeGreen"/>
+
+                <!-- ScrollView to make CollectionView scrollable -->
+                <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <CollectionView ItemsSource="{Binding ExceedingSpeedRecords}" 
+                                    HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="FillAndExpand">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal" Padding="10">
+                                    <Label Text="{Binding Timestamp, StringFormat='{0:HH:mm:ss}'}" />
+                                    <Label Text="{Binding Speed, StringFormat='{0} km/h'}" />
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+            </StackLayout>
+        </Frame>
+
+        <!-- Back to Main Button -->
+        <Button Text="Back to main"
+                BackgroundColor="LimeGreen"
+                TextColor="White"
+                Margin="0,10,0,0"
+                HeightRequest="70"
+                WidthRequest="300"
+                FontSize="30"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Clicked="OnButtonClicked" />
+    </VerticalStackLayout>
+</ContentPage>

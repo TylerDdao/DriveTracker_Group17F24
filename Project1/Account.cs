@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project1
 {
-    internal class Account
+    public class Account
     {
         string email;
         string password;

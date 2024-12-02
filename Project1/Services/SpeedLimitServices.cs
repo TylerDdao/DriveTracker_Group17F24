@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,64 +8,71 @@ namespace Project1.Services
 {
     public class SpeedLimitServices
     {
-        public async Task<string> GetSpeedLimitAsync(double latitude, double longitude)
+        private const string apiKey = "VrjJPxekgdcQ5QK0YXk2PipVaMYGd_qkyeAhLQUe35I"; // Replace with your actual API key
+
+        public async Task<int?> GetSpeedLimitAsync()
         {
-            string apiKey = "your api key";
-            string url = $"https://roads.googleapis.com/v1/speedLimits?path={latitude},{longitude}&key={apiKey}";
+            var tileIds = new List<string> { "24283388"}; // Add more as needed
+            int? speedLimit = null;
 
-            using (HttpClient client = new HttpClient())
+            foreach (var tileId in tileIds)
             {
-                try
+                string url = $"https://smap.hereapi.com/v8/maps/attributes?layers=SPEED_LIMITS_FC4&in=tile:{tileId}&apiKey={apiKey}";
+
+                using (HttpClient client = new HttpClient())
                 {
-                    // Get response from the API
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    if (response.IsSuccessStatusCode)
+                    try
                     {
-                        string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        // Debug: Log the raw JSON response
-                        Console.WriteLine("API Response: " + jsonResponse);
-
-                        // Parse the JSON response to extract speed limit data
-                        var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
-
-                        // Check if speed data is available and return it
-                        var speedLimit = speedData?.SpeedLimits?.FirstOrDefault()?.speedLimit;
-                        if (speedLimit.HasValue)
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        if (response.IsSuccessStatusCode)
                         {
-                            return $"{speedLimit.Value} km/h";
-                        }
-                        else
-                        {
-                            return "Speed limit not found";
+                            string jsonResponse = await response.Content.ReadAsStringAsync();
+                            var speedData = JsonSerializer.Deserialize<SpeedLimitResponse>(jsonResponse);
+
+                            foreach (var tile in speedData.Tiles)
+                            {
+                                foreach (var row in tile.Rows)
+                                {
+                                    if (!string.IsNullOrEmpty(row.FROM_REF_SPEED_LIMIT))
+                                    {
+                                        speedLimit = int.Parse(row.FROM_REF_SPEED_LIMIT);
+                                    }
+                                    if (!string.IsNullOrEmpty(row.TO_REF_SPEED_LIMIT))
+                                    {
+                                        speedLimit = int.Parse(row.TO_REF_SPEED_LIMIT);
+                                    }
+                                }
+                            }
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        // Log error response from the API
-                        string errorResponse = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Error: {response.StatusCode}, {errorResponse}");
-                        return "Error retrieving speed limit";
+                        Console.WriteLine($"Exception: {ex.Message}");
                     }
                 }
-                catch (Exception ex)
+
+                if (speedLimit.HasValue)
                 {
-                    // Log exception if occurs
-                    Console.WriteLine($"Exception: {ex.Message}");
-                    return "Exception occurred while fetching speed limit";
+                    break;
                 }
             }
+            return speedLimit;
         }
 
-        // Define a model to parse the JSON response
-        public class SpeedLimitResponse
+        private class SpeedLimitResponse
         {
-            public List<SpeedLimit> SpeedLimits { get; set; }
+            public List<Tile> Tiles { get; set; }
         }
 
-        public class SpeedLimit
+        private class Tile
         {
-            public int speedLimit { get; set; } // Speed limit in km/h or mph depending on locale
+            public List<Row> Rows { get; set; }
+        }
+
+        private class Row
+        {
+            public string FROM_REF_SPEED_LIMIT { get; set; }
+            public string TO_REF_SPEED_LIMIT { get; set; }
         }
     }
 }

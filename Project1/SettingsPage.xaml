@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project1.SettingsPage"
+             BackgroundColor="White">
+    <ScrollView>
+        <Frame BackgroundColor="Azure"  HorizontalOptions="Fill" VerticalOptions="Center" Padding="50,10">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="30">
+                <!-- Title Label -->
+                <Label Text="Update Driver Information:" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Start" 
+                       BackgroundColor="White" 
+                       TextColor="LimeGreen" 
+                       FontSize="Large" 
+                       Padding="10,20"/>
+                <!-- First Name Field -->
+                <Label Text="First Name:" FontSize="Medium" />
+                <Entry x:Name="FirstNameEntry"
+                       Placeholder="Enter your first name"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="FirstNameErrorLabel" Text="First name is required." TextColor="Red" IsVisible="False"/>
+                <!-- Last Name Field -->
+                <Label Text="Last Name:" FontSize="Medium" />
+                <Entry x:Name="LastNameEntry"
+                       Placeholder="Enter your last name"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="LastNameErrorLabel" Text="Last name is required." TextColor="Red" IsVisible="False"/>
+                <!-- Email Field -->
+                <Label Text="Email:" FontSize="Medium" />
+                <Entry x:Name="EmailEntry"
+                       Text="View-only text"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="Grey"/>
+                <Label x:Name="EmailErrorLabel" Text="Email is required." TextColor="Red" IsVisible="False"/>
+                <!-- Address Field -->
+                <Label Text="Address:" FontSize="Medium" />
+                <Entry x:Name="AddressEntry"
+                       Placeholder="Enter your address"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="AddressErrorLabel" Text="Address is required." TextColor="Red" IsVisible="False"/>
+                <!-- Postal Code Field -->
+                <Label Text="Postal Code:" FontSize="Medium" />
+                <Entry x:Name="PostalCodeEntry"
+                       Placeholder="Enter your postal code"
+                       Keyboard="Text"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="PostalCodeErrorLabel" Text="Postal code is required." TextColor="Red" IsVisible="False"/>
+                <!-- Driver License Number Field -->
+                <Label Text="Driver License:" FontSize="Medium" />
+                <Entry x:Name="LicenseNumberEntry"
+                       Placeholder="Enter your driver license number"
+                       ReturnType="Next"
+                       WidthRequest="250"
+                       HeightRequest="40"
+                       BackgroundColor="White"/>
+                <Label x:Name="LicenseNumberErrorLabel" Text="Driver license number is required." TextColor="Red" IsVisible="False"/>
+                
+                <!-- Update Button -->
+                <Button x:Name="UpdateButton"
+                        Text="Update Information"
+                        Clicked="OnUpdateClicked"
+                        HeightRequest="50"
+                        WidthRequest="220"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        BackgroundColor="LimeGreen"/>
+            </VerticalStackLayout>
+        </Frame>
+    </ScrollView>
+</ContentPage>

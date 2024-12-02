@@ -1,15 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 //Group17-Rob-Maksym-Ginbot-Dao
+
 namespace Project1
 {
     internal class Trip
     {
+
+        public List<SpeedRecord> ExceedingSpeedRecords { get; set; }
+        public DateTime StartTime { get; private set; }
+        public DateTime EndTime { get; set; }
+        public TimeSpan Duration => EndTime - StartTime;
+        public int Score { get; set; }
+
+        public Trip()
+        {
+            Score = 0;
+            StartTime = DateTime.Now; // Set the start time when the trip is created
+            ExceedingSpeedRecords = new List<SpeedRecord>();
+
         //Variables.
         int score;
         string startingLocation;
@@ -25,36 +40,40 @@ namespace Project1
             endLocation = "Default End Location";
             //Duration of 0 hours, 0 minutes, 0 seconds
             duration = new TimeSpan(0, 0, 0);
+
         }
 
-        //Constructor. Para.
-        public Trip(int score, string startingLocation, string endLocation, TimeSpan duration)
+        public void EndTrip()
         {
-            this.score = score;
-            this.startingLocation = startingLocation;
-            this.endLocation = endLocation;
-            this.duration = duration;
+            EndTime = DateTime.Now; // Record the end time of the trip
         }
 
-        //Getter and Setter for the scores.
-        public int GetScore()
+        public void AddSpeedRecordIfExceedsLimit(double currentSpeed, int speedLimit)
         {
-            return score;
-        }
-        public void SetScore(int score)
-        {
-            this.score = score;
+            if (currentSpeed > speedLimit + 10)
+            {
+                ExceedingSpeedRecords.Add(new SpeedRecord
+                {
+                    Timestamp = DateTime.Now,
+                    Speed = currentSpeed
+                });
+            }
         }
 
-        //Getter and Setter for startingLocation.
-        public string GetStartingLocation()
+        public void CalculateScore()
         {
-            return startingLocation;
+            //reducing the score by 10 points for each violation
+            Score = 100 - (ExceedingSpeedRecords.Count * 10);
+            if (Score < 0)
+                Score = 0;
         }
-        public void SetStartingLocation(string startingLocation)
-        {
-            this.startingLocation = startingLocation;
-        }
+    }
+
+
+    public class SpeedRecord
+    {
+        public DateTime Timestamp { get; set; }
+        public double Speed { get; set; }
 
         //Getter and Setter for endLocation.
         public string GetEndLocation()
@@ -98,5 +117,6 @@ namespace Project1
                 }
             }
         }
+
     }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project1.WelcomePage"
+             Title="">
+    <VerticalStackLayout>
+        <Frame CornerRadius="20" Margin ="5" HeightRequest="250" WidthRequest="350">
+            <Image Source="welcome.jpg" WidthRequest="450" HeightRequest="300"/>
+        </Frame>
+
+        <Label 
+            Text="Welcome to DriveTracker!"
+            FontSize="28"        
+            TextColor="RoyalBlue"                       
+            HorizontalTextAlignment="Center"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Label Text="Your journey, your growth." 
+           FontSize="18" 
+           FontAttributes="Italic" 
+           TextColor="#4CAF50" 
+           HorizontalOptions="Center"
+           Margin="10"/>
+        <Label
+    Text="Your journey to safer and more efficient driving starts here. Let’s drive smarter, together! "
+    Padding="40"
+    HorizontalTextAlignment="Center"/>
+        <Button
+Text="Get Started"
+TextColor="White"
+HeightRequest="50"
+WidthRequest="150"
+Background="LimeGreen"
+HorizontalOptions="CenterAndExpand"
+            VerticalOptions="Center"
+Clicked="SkipToLoginPageClicked"
+FontSize="20"/>
+    </VerticalStackLayout>
+</ContentPage>

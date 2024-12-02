@@ -1,28 +1,57 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InTrip.InTripPage"
-             Title="TripPage">
-    <VerticalStackLayout>
-        <StackLayout Margin="2" Spacing="50" BackgroundColor="Aquamarine">
-            <Label Text="Current Speed:" FontSize="Large"  />
-            <Label x:Name="CurrentSpeedLabel" FontSize="Large" Text="-- km/h" />
+             x:Class="InTrip.InTripPage">
 
-            <Label Text="Speed Limit:" FontSize="Large" />
-            <Label x:Name="SpeedLimitLabel" FontSize="Large" Text="Unknown" />
-            <Label Text=" Latitude: " x:Name="LatitudeText"/>
-            <Label Text=" Longitude: " x:Name="LongitudeText"/>
+    <VerticalStackLayout Padding="0" Spacing="20" HorizontalOptions="Center" VerticalOptions="Center">
 
-            
-        </StackLayout>
-        <StackLayout Margin="100" Spacing="10">
-            <Button   WidthRequest="250" 
-                      HeightRequest="80" 
-                      Text="End Trip" 
-                      Clicked="OnEndTripButtonClicked" 
-                      BackgroundColor="DarkRed"
-                      FontSize="Large"/>
-        </StackLayout>
-                     
+        <Label 
+            Text="Tracking Driver"
+            FontSize="24"
+            FontAttributes="Bold"
+            HorizontalOptions="Center" 
+            TextColor="LimeGreen"/>
+
+        <!-- Frame to encapsulate the tracking information -->
+        <Frame BorderColor="Lime" 
+               HasShadow="False" 
+               CornerRadius="5" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" 
+               Padding="30"
+               WidthRequest="340" 
+               HeightRequest="380">
+
+            <!-- StackLayout to display tracking information -->
+            <StackLayout Spacing="10">
+
+                <!-- Display Latitude -->
+                <Label Text="Latitude:" FontSize="20" />
+                <Label x:Name="LatitudeText" FontSize="20" BackgroundColor="LimeGreen" />
+
+                <!-- Display Longitude -->
+                <Label Text="Longitude:" FontSize="20" />
+                <Label x:Name="LongitudeText" FontSize="20" BackgroundColor="LimeGreen"/>
+
+                <!-- Display Current Speed -->
+                <Label Text="Current Speed:" FontSize="20" />
+                <Label x:Name="CurrentSpeedLabel" FontSize="20" BackgroundColor="LimeGreen"/>
+
+                <!-- Display Speed Limit -->
+                <Label Text="Speed Limit:" FontSize="20" />
+                <Label x:Name="SpeedLimitLabel" FontSize="20" BackgroundColor="LimeGreen"/>
+
+            </StackLayout>
+        </Frame>
+
+        <!-- End Trip Button -->
+        <Button Text="End Trip" 
+                Clicked="OnEndTripButtonClicked" 
+                BackgroundColor="LimeGreen" 
+                HeightRequest="70"
+                WidthRequest="300"
+                FontSize="30"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
     </VerticalStackLayout>
 </ContentPage>
