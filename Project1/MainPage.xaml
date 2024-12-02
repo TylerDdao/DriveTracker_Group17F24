@@ -18,18 +18,19 @@ HorizontalOptions="Center" TextColor="LimeGreen"/>
                    VerticalOptions="Center"/>
 
             <Button Text="?"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    BackgroundColor="White"
-                    BorderWidth="3"
-                    BorderColor="LimeGreen"
-                    CornerRadius="100"
-                    TextColor="Black"
-                    Margin="0,0,0,0"
-                    FontSize="24"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Clicked="OnInstructionButtonClicked"/>
+        WidthRequest="50"
+        HeightRequest="50"
+        BackgroundColor="White"
+        BorderWidth="3"
+        BorderColor="LimeGreen"
+        CornerRadius="100"
+        TextColor="Black"
+        Margin="0,0,0,0"
+        FontSize="24"
+        HorizontalOptions="End"
+        VerticalOptions="Center"
+        Clicked="OnInstructionButtonClicked"/>
+
         </HorizontalStackLayout>
 
         <Border Stroke="LimeGreen"

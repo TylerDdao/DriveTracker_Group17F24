@@ -2,19 +2,20 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+//Group17.
 namespace Project1.Services
 {
     public class SpeedLimitServices
     {
-        private const string apiKey = "fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ"; // Replace with your actual API key
-        private DeviceLocation _currentLocation;
-
+        //Api key.
+        private const string apiKey = "fpyvIoRnt9iTfzLK9fW2b5n-fAQ5b6xYA7L_cyuRNBQ"; 
+        private DeviceLocation _currentLocation; //Instance.
+        //Functions.
         public void SetCurrentLocation(DeviceLocation location)
         {
             _currentLocation = location;
         }
-
+        
         public async Task<int?> GetSpeedLimitAsync()
         {
             if (_currentLocation == null)
