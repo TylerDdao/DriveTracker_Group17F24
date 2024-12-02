@@ -1,10 +1,67 @@
+
 ﻿using System;
+
+﻿using Catel.Reflection;
+using Project1.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using System.Threading.Tasks;
 
 namespace Project1.Services
 {
     public class LocationServices
     {
+
+
+        public async Task<double> GetLat()
+        {
+            double lat = 0;
+            Location location = await Geolocation.Default.GetLastKnownLocationAsync();
+            lat = location.Latitude;
+            return lat;
+        }
+        public async Task<double> GetLog()
+        {
+            double log = 0;
+            Location location = await Geolocation.Default.GetLastKnownLocationAsync();
+            log = location.Longitude;
+            return log;
+        }
+        public async Task<string> GetCachedLocation()
+        {
+            try
+            {
+                Location location = await Geolocation.Default.GetLastKnownLocationAsync();
+
+                if (location != null)
+                    return $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}, speed:{location.Speed}";
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                // Handle not supported on device exception
+            }
+            catch (FeatureNotEnabledException fneEx)
+            {
+                // Handle not enabled on device exception
+            }
+            catch (PermissionException pEx)
+            {
+                // Handle permission exception
+            }
+            catch (Exception ex)
+            {
+                // Unable to get location
+            }
+
+            return "None";
+        }
+        //get current location 
+        private CancellationTokenSource _cancelTokenSource;
+        private bool _isCheckingLocation;
+
         public event EventHandler<DeviceLocation> LocationChanged;
 
         public async Task StartListening()
