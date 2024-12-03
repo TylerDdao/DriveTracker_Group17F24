@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Project1
 
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-//Group17-Rob-Maksym-Ginbot-Dao
-
-namespace Project1
 {
     internal class Trip
     {
@@ -41,7 +32,7 @@ namespace Project1
 
         public void AddSpeedRecordIfExceedsLimit(double currentSpeed, int speedLimit)
         {
-            if (currentSpeed > speedLimit + 10)
+            if (currentSpeed > speedLimit + 5)
             {
                 ExceedingSpeedRecords.Add(new SpeedRecord
                 {

@@ -25,17 +25,31 @@ namespace InTrip
             StartListeningForLocationUpdates();
             RefreshSpeedLimitAsync();
         }
-
+        //Every time the location is updated it adds a record if voilation is made.
         private void StartListeningForLocationUpdates()
         {
             _locationServices.LocationChanged += async (sender, deviceLocation) =>
             {
+                _speedLimitServices.SetCurrentLocation(deviceLocation);
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     LatitudeText.Text = $"{deviceLocation.Latitude}";
                     LongitudeText.Text = $"{deviceLocation.Longitude}";
-                    double speedInKmh = deviceLocation.Speed; // Convert speed to km/h * 3.6
+                    double speedInKmh = deviceLocation.Speed;
                     CurrentSpeedLabel.Text = $"{speedInKmh} km/h";
+                });
+
+                var speedLimit = await _speedLimitServices.GetSpeedLimitAsync();
+                
+                
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (speedLimit != null)
+                    {
+                        currentTrip.AddSpeedRecordIfExceedsLimit(deviceLocation.Speed, speedLimit.Value);
+                    }
+                    SpeedLimitLabel.Text = $"{speedLimit} km/h"; // Always show speed limit
                 });
             };
 
@@ -51,7 +65,7 @@ namespace InTrip
 
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    SpeedLimitLabel.Text = speedLimit.HasValue ? $"{speedLimit.Value} km/h" : "No speed limit data available";
+                    SpeedLimitLabel.Text = $"{speedLimit} km/h"; // Always show speed limit
                 });
             }
         }
@@ -73,21 +87,5 @@ namespace InTrip
                 await DisplayAlert("Error", "An error occurred while ending the trip.", "OK");
             }
         }
-    }
-
-    public class SpeedLimitResponse
-    {
-        public List<Tile> Tiles { get; set; }
-    }
-
-    public class Tile
-    {
-        public List<Row> Rows { get; set; }
-    }
-
-    public class Row
-    {
-        public string FROM_REF_SPEED_LIMIT { get; set; }
-        public string TO_REF_SPEED_LIMIT { get; set; }
     }
 }
