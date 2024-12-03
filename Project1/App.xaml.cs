@@ -11,7 +11,7 @@
 
             //Set AccountPage as the startup page.
             //MainPage = new NavigationPage(new AccountPage());
-            MainPage = new NavigationPage(new MainPage());
+            //MainPage = new NavigationPage(new MainPage());
  
         }
     }
