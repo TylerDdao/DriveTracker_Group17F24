@@ -6,4 +6,4 @@ DriveTracker app is made to evaluate driver's driving habit based on their drivi
 1. [Maksym Pyvovar](https://github.com/MaksPyvo)
 2. [Rob Mogus](https://github.com/ROB-MOGUS)
 3. [Tyler Dao](https://github.com/TylerDdao)
-4. [Ginbot Weldeab](
+4. [Ginbot Weldeab](https://github.com/gweldeab7)
