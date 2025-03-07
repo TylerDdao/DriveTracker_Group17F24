@@ -28,7 +28,11 @@ Follow the official Microsoft guide to set up and install the app on your Androi
 ## Usage
 1. Start a new trip to begin tracking speed.  
 2. The app continuously monitors the speed and compares it with road limits.  
-3. At the end of the trip, the app generates a driving score based on detected violations. 
+3. At the end of the trip, the app generates a driving score based on detected violations.
+
+## Demo Video
+Watch the demo of DriveTracker in action:  
+[DriveTracker Demo](https://youtube.com/shorts/J7VNLZt9Mv4)
 
 ## Authors
 1. [Maksym Pyvovar](https://github.com/MaksPyvo)
